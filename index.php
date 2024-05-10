@@ -92,17 +92,7 @@
 <body>
 <h1>萬年曆 - Oscar</h1>  
 
-
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
-<div class="header"><h1>時間</h1></div>
-<div class="block_margin_35">
-
-    <h2>線上月曆製作</h2>
-    <ul>
-        <li>以表格方式呈現整個月份日期</li>
-        <li>可以在特殊日其中顯示資訊(假日或紀念日)</li>
-        <li>嘗試以block box 或 flex box 的方式製作月曆</li>
-    </ul>
     <?php
 
     $color='red';
@@ -159,6 +149,12 @@
     echo "生日月份是:".mb_substr ( $birthday, 5, 2 )."<br>";
     echo "生日日期是:".mb_substr ( $birthday, 8, 2 )."<br>";
     echo "<br>";
+    // $date=$year.'-'.$month.'-'.$i*7+$j-($firstWeekStartDay-1);
+    /* 生日處理判斷 */
+    $replace=mb_substr($birthday,0,4);
+    $replaceTo=str_replace($replace,date("Y"),$birthday);
+    $spDate=strtotime($replaceTo); //生日時間戳
+    // $dateSec=strtotime($date); //當下時間戳
 
     echo "<hr>";
     $total_week = ceil(($days + ($firstWeekStartDay))/7) ;  // 當月總天數+空白天數/7 取無條件進入
@@ -202,204 +198,19 @@
     ?>
 
     <div class="month_btn">
-        <div class="next_month_btn"><a href="calendar.php?month=<?= $pre ?>">上個月</a></div>
-        <div class="pre_month_btn"><a href="calendar.php?month=<?= $next ?>">下個月</a></div>
+        <div class="next_month_btn"><a href="index.php?month=<?= $pre ?>">上個月</a></div>
+        <div><?=$month?></div>
+        <div class="pre_month_btn"><a href="index.php?month=<?= $next ?>">下個月</a></div>
     </div>
 
     <?php 
     echo "<hr>";
-
-    /*
-    4  1  1 -0
-    5  3  3 -2
-    6  6  6 -5
-    7  1  1 -0
-    */
-
-    echo "<table>";
-    echo "<tr>";
-    echo "<td class='$color' style='';>日</td>";
-    echo "<td>一</td>";
-    echo "<td>二</td>";
-    echo "<td>三</td>";
-    echo "<td>四</td>";
-    echo "<td>五</td>";
-    echo "<td class='$color2' style='';>六</td>";
-    echo "</tr>";
-
-
-
-    // 我改寫的
-    for($i=0;$i<$total_week;$i++){   //一個月最多 6 個禮拜
-        echo "<tr>";
-        for($j=0;$j<7;$j++){   //一個禮拜最多 7 天
-            if($i==0 /* $j>=$firstWeekStartDay */){  // 第一列
-                if($j>=$firstWeekStartDay){  // 一號之後有日期
-                    if($j==0){
-                        echo "<td class='$color' style=''>◆";  //星期日
-                        echo    $i*7+$j-($firstWeekStartDay-1);
-                        echo "</td>";
-                    }else if($j==6){
-                        echo "<td class='$color2' style='';>★";  //星期六
-                        echo    $i*7+$j-($firstWeekStartDay-1);
-                        echo "</td>";
-                    }else{
-                        echo "<td>^";
-                        echo    $i*7+$j-($firstWeekStartDay-1);  //星期一~五
-                        echo "</td>";
-                    }
-                }else{  // 一號之前沒日期
-                    if($j==0){
-                        echo "<td class='$color' style='';>$";  //星期日
-                        echo "";
-                        echo "</td>";
-                    }else if($j==6){
-                        echo "<td class='$color2' style='';>㊣";  //星期六
-                        echo    $i*7+$j-($firstWeekStartDay-1);
-                        echo "</td>";
-                    }else{
-                        echo "<td>?";
-                        echo "";                                //星期一~五
-                        echo "</td>";
-                    }
-                }   
-            }else if($i>0){   // 第二列之後
-                if($j==0){
-                    echo "<td class='$color' style='';>＃";   //星期日
-                    if($i*7+$j-($firstWeekStartDay-1)<=$days){
-                        echo $i*7+$j-($firstWeekStartDay-1);
-                    }else{
-                        echo "+ &nbsp;";  //最後沒日期星期日
-                    }
-                    echo "</td>";
-                }else if($j==6){
-                    echo "<td class='$color2' style='';>◎";  //星期六
-                    if($i*7+$j-($firstWeekStartDay-1)<=$days){
-                        echo $i*7+$j-($firstWeekStartDay-1);
-                    }else{
-                        echo "- &nbsp;";   //最後沒日期星期六
-                    }
-                    echo "</td>";
-                }else{
-                    echo "<td>";
-                    if($i*7+$j-($firstWeekStartDay-1)<=$days){
-                        echo '■'.$i*7+$j-($firstWeekStartDay-1);  //第三排到最後一天
-                    }else{
-                        echo "! &nbsp;";   //最後沒日期星期一~星期五
-                    }
-                    echo "</td>";
-                }
-                    
-                
-            }else{
-                echo "<td></td>";
-            }
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-
-
-    echo "<br>";
-    //老師的
-    echo "<table>";
-    echo "<tr>";
-    echo "<td>日</td>";
-    echo "<td>一</td>";
-    echo "<td>二</td>";
-    echo "<td>三</td>";
-    echo "<td>四</td>";
-    echo "<td>五</td>";
-    echo "<td>六</td>";
-    echo "</tr>";
-    for($i=0;$i<6;$i++){
-        echo "<tr>";
-        for($j=0;$j<7;$j++){
-            $date=$year.'-'.$month.'-'.$i*7+$j-($firstWeekStartDay-1);
-            /* 生日處理判斷 */
-            $replace=mb_substr($birthday,0,4);
-            $replaceTo=str_replace($replace,date("Y"),$birthday);
-            $spDate=strtotime($replaceTo); //生日時間戳
-            $dateSec=strtotime($date); //當下時間戳
-            /* 生日處理判斷 */
-            if($i==0 && $j>=$firstWeekStartDay ){
-                if($spDate==$dateSec){ // 假如 生日時間戳 = 下時間戳 就特別顯示
-                    echo "<td style='background-color:yellow;font-weight:bolder;font-size:24px;color:blue'>";
-                }else if(date("w",strtotime($date))==0 || date("w",strtotime($date))==6){
-                    echo "<td style='background-color:pink'>";
-                }else{
-                    echo "<td>";
-                }
-                echo    $i*7+$j-($firstWeekStartDay-1);
-                echo "</td>";
-            }else if($i>0){
-                if($spDate==$dateSec){
-                    echo "<td style='background-color:yellow;font-weight:bolder;font-size:24px;color:blue'>";
-                }else if(date("w",strtotime($date))==0 || date("w",strtotime($date))==6){
-                    echo "<td style='background-color:pink'>";
-                }else{
-                    echo "<td>";
-                }
-                if($i*7+$j-($firstWeekStartDay-1)<=$days){
-                    echo $i*7+$j-($firstWeekStartDay-1);
-                }else{
-                    echo "&nbsp;";
-                }
-                echo "</td>";
-                
-            }else{
-                echo "<td></td>";
-            }
-        }
-        echo "</tr>";
-    }
-    echo "<br>";
-
-    //  印 $i $j
-    echo "<table>";
-    echo "<tr>";
-    echo "<td>日</td>";
-    echo "<td>一</td>";
-    echo "<td>二</td>";
-    echo "<td>三</td>";
-    echo "<td>四</td>";
-    echo "<td>五</td>";
-    echo "<td>六</td>";
-    echo "</tr>";
-    echo "<br>";
-    echo "<br>";
-    for($i=0;$i<6;$i++){  
-        echo "<tr>";
-        for($j=0;$j<7;$j++){
-            if($i==0 && $j>=$firstWeekStartDay ){
-                echo "<td>";
-                echo    $i*7+$j-($firstWeekStartDay-1)  ."<br>﹝i列".$i.",j欄".$j."﹞";
-                echo "<br>".$i."*7+".$j."-(".$firstWeekStartDay."-1)";
-                echo "</td>";
-            }else if($i>0){
-                echo "<td>";
-                if($i*7+$j-($firstWeekStartDay-1)<=$days){
-                    echo $i*7+$j-($firstWeekStartDay-1) ."<br>﹝i列".$i.',j欄'.$j."﹞";
-                    echo "<br>".$i."*7+".$j."-(".$firstWeekStartDay."-1)";
-                }else{
-                    echo "&nbsp;";
-                }
-                echo "</td>";
-                
-            }else{
-                echo "<td></td>";
-            }
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-    echo "<br>";
     ?>
     
 
     <style>
     .block-table{
-        width:380px;
+        width:730px;
         display:flex;
         flex-wrap:wrap;
         margin: 0 auto;
@@ -408,9 +219,9 @@
         margin-left:-1px;
         margin-top:-1px;
         display:inline-block;
-        width:50px;
-        height:50px;
-        border:1px solid lightgreen;
+        width:100px;
+        height:100px;
+        border:2px solid lightgray;
         position:relative;
         transition: all 0.3s;
         background:white;
@@ -421,26 +232,42 @@
         margin-left:-1px;
         margin-top:-1px;
         display:inline-block;
-        width:50px;
-        height: 30px;
-        line-height: 35px;
-        border:1px solid lightgreen;
+        width:100px;
+        height: 50px;
+        line-height: 50px;
+        border:2px solid lightgray;
         text-align: center;
-        background-color: black; 
+        background-color: lightgray; 
         color: white; 
+        border-right-color: white;
+        border-right-style: dashed;
     }
     .item:hover{
-        background:lightblue;
-        transform: scale(1.3);
+        background: white;
+        transform: scale(1.1);
         font-weight:bold;
-        color: gray;
+        /* color: gray; */
         transition: all 0.3s;
         z-index:10;
 
     }
 
     .holiday{
-        background:pink;
+        /* background:pink; */
+        font-weight: bold;
+    }
+
+    .holiday-sunday {
+        color:red;
+    }
+
+    .holiday-saturday {
+        color:red;
+    }
+
+    .date {
+        text-align: right;
+        padding-right: 20px;
     }
 
 
@@ -456,20 +283,55 @@
     /* echo "<pre>";
     print_r($days);
     echo "</pre>"; */
+
+    function chineseMonthToEnglish($chineseMonth) {
+        $mapping = [
+            '一月' => 'January',
+            '二月' => 'February',
+            '三月' => 'March',
+            '四月' => 'April',
+            '五月' => 'May',
+            '六月' => 'June',
+            '七月' => 'July',
+            '八月' => 'August',
+            '九月' => 'September',
+            '十月' => 'October',
+            '十一月' => 'November',
+            '十二月' => 'December',
+        ];
+    
+        return $mapping[$chineseMonth];
+    }
+
+    function chineseWeekdayToEnglish($chineseMonth) {
+        $mapping = [
+            '星期一' => 'Sunday',
+            '星期二' => 'Monday',
+            '星期三' => 'Tuesday',
+            '星期四' => 'Wednesday',
+            '星期五' => 'Thursday',
+            '星期六' => 'Friday',
+            '星期日' => 'Saturday',
+        ];
+    
+        return $mapping[$chineseMonth];
+    }
+
     echo "<div class='block-table'>";
-    echo "<div class='item-header'>日</div>";
-    echo "<div class='item-header'>一</div>";
-    echo "<div class='item-header'>二</div>";
-    echo "<div class='item-header'>三</div>";
-    echo "<div class='item-header'>四</div>";
-    echo "<div class='item-header'>五</div>";
-    echo "<div class='item-header'>六</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期三')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期四')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期五')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期六')."</div>";
+    echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
     foreach($days as $day){
         $format=explode("-",$day)[2];
         $w=date("w",strtotime($day));
-        if($w==0 || $w==6){
-
-            echo "<div class='item holiday'>$format</div>";
+        if($w==0){
+            echo "<div class='item holiday holiday-sunday'><div class='date'>$format</div></div>";
+        }else if($w==6){
+            echo "<div class='item holiday holiday-saturday'><div class='date'>$format</div></div>";
         }else{
 
             echo "<div class='item'>";
