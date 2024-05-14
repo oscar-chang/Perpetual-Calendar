@@ -14,6 +14,9 @@
         }
         body {
             width: 80%;
+            margin: 0 auto;
+            background-image: url('./images/horizontal/pexels-sinarz97-20015727.jpg'); 
+            background-size: cover;
         }
         .block_margin_35 {
             width: 75%;
@@ -42,6 +45,28 @@
         #month {
             font-size: 18px;
             padding: 5px 7px;
+            /*appearance: none;*/ /* 清除原生外觀 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            /*appearance: none; *//* 清除原生外觀 */
+            /*background-color: transparent;*/ /* 背景透明 */
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+        }
+
+        /* 下拉選單的選項 */
+        .selectopt {
+            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+        }
+
+        /* 滑鼠懸停時的選項樣式 */
+        .selectopt:hover {
+            /*background-color: #f0f0f0;*/ /* 滑鼠懸停時的背景色 */
+            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
         }
 
         .month_btn {
@@ -51,14 +76,33 @@
         }
 
         .next_month_btn {
-            width: 35%;
-            float: left;
+            width: 5%;
+            /* float: left; */
             text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.1em 0.1em 0.2em;
+            transition: all 0.2s;
+            right: 20%;
+            top: 75%;
+            position: absolute;
         }
         .pre_month_btn {
-            width: 35%;
-            float: right;
+            width: 5%;
+            /* float: right; */
             text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.1em 0.1em 0.2em;
+            transition: all 0.2s;
+            left: 20%;
+            top: 75%;
+            position: absolute;
+        }
+        .pre_month_btn > a, .next_month_btn > a {
+            color: white;
+            text-decoration: none;
+            font-size: xxx-large;
         }
   </style>
   <script>
@@ -101,20 +145,20 @@
     // echo "<div class='month'>月份:</div>";
     ?>
 
-    <select onchange="get_month_val()" name="" id="month">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>      
-    </select>
+    <select onchange="get_month_val()" name="" id="month" class="select">
+        <option class="selectopt" value="1">1</option>
+        <option class="selectopt" value="2">2</option>
+        <option class="selectopt" value="3">3</option>
+        <option class="selectopt" value="4">4</option>
+        <option class="selectopt" value="5">5</option>
+        <option class="selectopt" value="6">6</option>
+        <option class="selectopt" value="7">7</option>
+        <option class="selectopt" value="8">8</option>
+        <option class="selectopt" value="9">9</option>
+        <option class="selectopt" value="10">10</option>
+        <option class="selectopt" value="11">11</option>
+        <option class="selectopt" value="12">12</option>      
+    </select> 月
 
 
     <?php
@@ -198,9 +242,9 @@
     ?>
 
     <div class="month_btn">
-        <div class="next_month_btn"><a href="index.php?month=<?= $pre ?>">上個月</a></div>
-        <div><?=$month?></div>
-        <div class="pre_month_btn"><a href="index.php?month=<?= $next ?>">下個月</a></div>
+        <!-- <div class="next_month_btn"><a href="index.php?month=<?= $pre ?>">上個月</a></div> -->
+        <div><?=$month?>月</div>
+        <!-- <div class="pre_month_btn"><a href="index.php?month=<?= $next ?>">下個月</a></div> -->
     </div>
 
     <?php 
@@ -210,25 +254,36 @@
 
     <style>
     .block-table{
-        width:730px;
+        width:722px;
         display:flex;
         flex-wrap:wrap;
         margin: 0 auto;
+        transition: .2s all;
+        backdrop-filter: blur(2px);
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+    .block-table:hover {
+        background-color: rgba(0, 0, 0, .1);
+        /* backdrop-filter: invert(80%); */
+        backdrop-filter: blur(2px);
+        background-color: rgba(255, 255, 255, 0.5);
     }
     .item{
-        margin-left:-1px;
-        margin-top:-1px;
-        display:inline-block;
-        width:100px;
-        height:100px;
-        border:2px solid lightgray;
-        position:relative;
-        transition: all 0.3s;
-        background:white;
+        margin-left: -1px;
+        /* background-color: darkcyan; */
+        margin-top: -1px;
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border: 2px solid lightgray;
+        position: relative;
+        transition: all 0.2s;
+        color: white;
         line-height: 50px;
         text-align: center;
     }
     .item-header{
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         margin-left:-1px;
         margin-top:-1px;
         display:inline-block;
@@ -237,17 +292,18 @@
         line-height: 50px;
         border:2px solid lightgray;
         text-align: center;
-        background-color: lightgray; 
+        background-color: #000000b8; 
         color: white; 
-        border-right-color: white;
-        border-right-style: dashed;
+        /* border-right-color: white;
+        border-right-style: dashed; */
     }
     .item:hover{
-        background: white;
-        transform: scale(1.1);
+        /* background: white; */
+        /* transform: scale(1.1); */
+        font-size: 60px;
         font-weight:bold;
         /* color: gray; */
-        transition: all 0.3s;
+        transition: all 0.2s;
         z-index:10;
 
     }
@@ -255,6 +311,26 @@
     .holiday{
         /* background:pink; */
         font-weight: bold;
+    }
+
+    .date {
+        font-size: 20px;
+        /* letter-spacing: 2px; */
+        text-align: right;
+        padding-right: 20px;
+        text-shadow: black 0.1em 0.1em 0.2em;
+        transition: all 0.2s;
+    }
+
+    .not-month {
+        backdrop-filter: invert(0);
+        background-color: unset;
+        opacity: 1;
+    }
+
+    .not-month > .date {
+        text-shadow: #9E9E9E 0em 0em 0em;
+        color: gray;
     }
 
     .holiday-sunday {
@@ -265,24 +341,31 @@
         color:red;
     }
 
-    .date {
-        text-align: right;
-        padding-right: 20px;
+    .holiday-sunday > .date, .holiday-saturday > .date {
+        text-shadow: none;
+        text-shadow: #795548 0.05em 0.05em 0.05em;
     }
 
+    .item:hover > .date{
+        font-size: 28px;
+    }
 
+    
 
     </style>
+
+    <div class="pre_month_btn"><a href="index.php?month=<?= $pre ?>" title="上個月">«</a></div>
+
     <?php 
 
     $days=[];
-    for($i=0;$i<42;$i++){
-        $diff=$i-$firstWeekStartDay;
-        $days[]=date("Y-m-d",strtotime("$diff days",$firstDay));
+    for($i=0;$i<42;$i++){   //這個循環用於生成 42 個日期，這將用於填充一個月的行事曆
+        $diff=$i-$firstWeekStartDay;  //計算了當前循環的日期與該月份的第一天之間的差距
+        $days[]=date("Y-m-d",strtotime("$diff days",$firstDay));  //根據差距 $diff 將日期加到 $firstDay 上
     }
-    /* echo "<pre>";
-    print_r($days);
-    echo "</pre>"; */
+    // echo "<pre>";
+    // print_r($days);
+    // echo "</pre>"; 
 
     function chineseMonthToEnglish($chineseMonth) {
         $mapping = [
@@ -326,22 +409,34 @@
     echo "<div class='item-header'>".chineseWeekdayToEnglish('星期六')."</div>";
     echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
     foreach($days as $day){
-        $format=explode("-",$day)[2];
-        $w=date("w",strtotime($day));
-        if($w==0){
-            echo "<div class='item holiday holiday-sunday'><div class='date'>$format</div></div>";
-        }else if($w==6){
-            echo "<div class='item holiday holiday-saturday'><div class='date'>$format</div></div>";
-        }else{
+        $c_month=explode("-",$day)[1]; 
+        $pre_month=$month-1;
+        $next_month=$month+1;
+        // echo $pre_month;
 
-            echo "<div class='item'>";
-            echo "<div class='date'>$format</div>";
-            echo "</div>";
+        $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
+        if($c_month==$pre_month){
+            echo "<div class='item not-month'><div class='date'>$c_day</div></div>";
+        }else if($c_month==$next_month){
+            echo "<div class='item not-month'><div class='date'>$c_day</div></div>";
+        }else{
+            // $c_day=explode("-",$day)[2];  
+            $w=date("w",strtotime($day));
+            if($w==0){  //如果星期幾是 0（星期日）
+                echo "<div class='item holiday holiday-sunday'><div class='date'>$c_day</div></div>";
+            }else if($w==6){  //如果星期幾是 6（星期六）
+                echo "<div class='item holiday holiday-saturday'><div class='date'>$c_day</div></div>";
+            }else{  //如果是工作日（即星期一到星期五）
+                echo "<div class='item'>";
+                echo "<div class='date'>$c_day</div>";
+                echo "</div>";
+            }
         }
     }
     echo "</div>";
 
     ?>
+    <div class="next_month_btn"><a href="index.php?month=<?= $next ?>" title="下個月">»</a></div>
 </div>
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
   
