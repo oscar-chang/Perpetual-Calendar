@@ -281,6 +281,11 @@
         color: white;
         line-height: 50px;
         text-align: center;
+        font-weight: bold;
+        /* border-top: 1px solid #9E9E9E;
+        border-left: 1px solid #9E9E9E;
+        border-right: 5px solid #272626;
+        border-bottom: 5px solid #3f3e3e; */
     }
     .item-header{
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -299,18 +304,29 @@
     }
     .item:hover{
         /* background: white; */
-        /* transform: scale(1.1); */
+        transform: scale(1.1);
         font-size: 60px;
         font-weight:bold;
         /* color: gray; */
         transition: all 0.2s;
         z-index:10;
+    }
 
+    .not-month:hover{
+        transform: scale(1);
     }
 
     .holiday{
+        text-shadow: none;
+    }
+
+    .holiday > .date{
         /* background:pink; */
         font-weight: bold;
+        color: red;
+        text-shadow: none;
+        font-size: x-large;
+        text-shadow: white 0.05em 0.05em 0.2em;
     }
 
     .date {
@@ -323,17 +339,26 @@
     }
 
     .not-month {
-        backdrop-filter: invert(0);
+        backdrop-filter: invert(1);
         background-color: unset;
-        opacity: 1;
+        opacity: 0.8;
     }
 
     .not-month > .date {
         text-shadow: #9E9E9E 0em 0em 0em;
-        color: gray;
+        color: #c5c5c5;
+        /* opacity: 0.8;*/
     }
 
-    .holiday-sunday {
+    .public_holiday {
+        display: block;
+        font-size: 14px;
+        font-weight: 100;
+        text-align: center;
+        letter-spacing: 2px;
+    }
+
+    /* .holiday-sunday {
         color:red;
     }
 
@@ -348,7 +373,7 @@
 
     .item:hover > .date{
         font-size: 28px;
-    }
+    } */
 
     
 
@@ -410,26 +435,212 @@
     echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
     foreach($days as $day){
         $c_month=explode("-",$day)[1]; 
+        // echo $day;
         $pre_month=$month-1;
         $next_month=$month+1;
         // echo $pre_month;
 
+        //12  1  2
+        //11  12 1 
+
+        // 宣告國定假日的關聯數組
+        $holidays = [
+            '2024-01-01' => '元旦',
+            '2024-02-28' => '和平紀念日',
+            '2024-04-04' => '兒童節',
+            // 添加更多國定假日...
+        ];
+
+        // 打印出所有的國定假日
+        // foreach ($holidays as $date => $holidayName) {
+        //     echo "日期: $date, 國定假日: $holidayName" . PHP_EOL;
+        // }
+
+        // $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
+        // foreach ($holidays as $date => $holiday_name) {
+        //     if($day == $date){
+        //         if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){
+        //             echo "<div class='item not-month'>";
+        //             echo "<div class='date'>$c_day</div>";
+        //             echo "<div class='public_holiday'>$holiday_name</div>";
+        //             echo "</div>";
+        //         }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){
+        //             echo "<div class='item not-month'>";
+        //             echo "<div class='date'>$c_day</div>";
+        //             echo "<div class='public_holiday'>$holiday_name</div>";
+        //             echo "</div>";
+        //         }else{
+        //             // $c_day=explode("-",$day)[2];  
+        //             $w=date("w",strtotime($day));
+        //             if($w==0){  //如果星期幾是 0（星期日）
+        //                 echo "<div class='item holiday holiday-sunday'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //                 echo "</div>";
+        //             }else if($w==6){  //如果星期幾是 6（星期六）
+        //                 echo "<div class='item holiday holiday-saturday'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //                 echo "</div>";
+        //             }else{  //如果是工作日（即星期一到星期五）
+        //                 echo "<div class='item'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //                 echo "</div>";
+        //             }
+        //         }
+        //     }else{
+        //         if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){
+        //             echo "<div class='item not-month'>";
+        //             echo "<div class='date'>$c_day</div>";
+        //             echo "</div>";
+        //         }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){
+        //             echo "<div class='item not-month'>";
+        //             echo "<div class='date'>$c_day</div>";
+        //             echo "</div>";
+        //         }else{
+        //             // $c_day=explode("-",$day)[2];  
+        //             $w=date("w",strtotime($day));
+        //             if($w==0){  //如果星期幾是 0（星期日）
+        //                 echo "<div class='item holiday holiday-sunday'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "</div>";
+        //             }else if($w==6){  //如果星期幾是 6（星期六）
+        //                 echo "<div class='item holiday holiday-saturday'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "</div>";
+        //             }else{  //如果是工作日（即星期一到星期五）
+        //                 echo "<div class='item'>";
+        //                 echo "<div class='date'>$c_day</div>";
+        //                 echo "</div>";
+        //             }
+        //         }
+        //     }
+        // }
+            
+
+
+        // $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
+        // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){
+        //     echo "<div class='item not-month'>";
+        //     echo "<div class='date'>$c_day</div>";
+        //     foreach ($holidays as $date => $holiday_name) {
+        //         if($day == $date){
+        //             echo "<div class='public_holiday'>$holiday_name</div>";
+        //         }
+        //     }
+        //     echo "</div>";
+        // }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){
+        //     echo "<div class='item not-month'>";
+        //     echo "<div class='date'>$c_day</div>";
+        //     foreach ($holidays as $date => $holiday_name) {
+        //         if($day == $date){
+        //             echo "<div class='public_holiday'>$holiday_name</div>";
+        //         }
+        //     }
+        //     echo "</div>";
+        // }else{
+        //     // $c_day=explode("-",$day)[2];  
+        //     $w=date("w",strtotime($day));
+        //     if($w==0){  //如果星期幾是 0（星期日）
+        //         echo "<div class='item holiday holiday-sunday'>";
+        //         echo "<div class='date'>$c_day</div>";
+        //         foreach ($holidays as $date => $holiday_name) {
+        //             if($day == $date){
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //             }
+        //         }
+        //         echo "</div>";
+        //     }else if($w==6){  //如果星期幾是 6（星期六）
+        //         echo "<div class='item holiday holiday-saturday'>";
+        //         echo "<div class='date'>$c_day</div>";
+        //         foreach ($holidays as $date => $holiday_name) {
+        //             if($day == $date){
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //             }
+        //         }
+        //         echo "</div>";
+        //     }else{  //如果是工作日（即星期一到星期五）
+        //         echo "<div class='item'>";
+        //         echo "<div class='date'>$c_day</div>";
+        //         foreach ($holidays as $date => $holiday_name) {
+        //             if($day == $date){
+        //                 echo "<div class='public_holiday'>$holiday_name</div>";
+        //             }
+        //         }
+        //         echo "</div>";
+        //     }
+        // }
+
         $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
-        if($c_month==$pre_month){
-            echo "<div class='item not-month'><div class='date'>$c_day</div></div>";
-        }else if($c_month==$next_month){
-            echo "<div class='item not-month'><div class='date'>$c_day</div></div>";
+        if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){
+            foreach ($holidays as $date => $holiday_name) {
+                if($day == $date){
+                    echo "<div class='item not-month'>";
+                    echo "<div class='date'>$c_day</div>";
+                    echo "<div class='public_holiday'>$holiday_name</div>";
+                    echo "</div>";
+                }else{
+                    echo "<div class='item not-month'>";
+                    echo "<div class='date'>$c_day</div>";
+                    echo "</div>";
+                }
+            }
+        }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){
+            foreach ($holidays as $date => $holiday_name) {
+                if($day == $date){
+                    echo "<div class='item not-month'>";
+                    echo "<div class='date'>$c_day</div>";
+                    echo "<div class='public_holiday'>$holiday_name</div>";
+                    echo "</div>";
+                }else{
+                    echo "<div class='item not-month'>";
+                    echo "<div class='date'>$c_day</div>";
+                    echo "</div>";
+                }
+            }
         }else{
             // $c_day=explode("-",$day)[2];  
             $w=date("w",strtotime($day));
             if($w==0){  //如果星期幾是 0（星期日）
-                echo "<div class='item holiday holiday-sunday'><div class='date'>$c_day</div></div>";
+                foreach ($holidays as $date => $holiday_name) {
+                    if($day == $date){
+                        echo "<div class='item'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='public_holiday'>$holiday_name</div>";
+                        echo "</div>";
+                    }else{
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "</div>";
+                    }
+                }
             }else if($w==6){  //如果星期幾是 6（星期六）
-                echo "<div class='item holiday holiday-saturday'><div class='date'>$c_day</div></div>";
+                foreach ($holidays as $date => $holiday_name) {
+                    if($day == $date){
+                        echo "<div class='item holiday holiday-saturday'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='public_holiday'>$holiday_name</div>";
+                        echo "</div>";
+                    }else{
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "</div>";
+                    }
+                }
             }else{  //如果是工作日（即星期一到星期五）
-                echo "<div class='item'>";
-                echo "<div class='date'>$c_day</div>";
-                echo "</div>";
+                foreach ($holidays as $date => $holiday_name) {
+                    if($day == $date){
+                        echo "<div class='item holiday holiday-saturday'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='public_holiday'>$holiday_name</div>";
+                        echo "</div>";
+                    }else{
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "</div>";
+                    }
+                }
             }
         }
     }
