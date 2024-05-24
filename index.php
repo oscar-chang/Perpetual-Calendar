@@ -213,6 +213,10 @@
         $currentCMonth = mathMonthToChinese($month);
         echo "目前中文月份(預設): " . $currentCMonth;
         echo "<br><br>";
+
+        $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
+        header($reUrl);
+        // exit();
     }else{
         $month = $_GET['month'];
         $currentCMonth = mathMonthToChinese($month);
@@ -228,6 +232,76 @@
     echo "第一週的開始是第 ".$firstWeekStartDay." 日 (第一天是星期幾 firstWeekStartDay)";
     echo "<br><br>";
     echo "目前月份是:". $month;
+
+    if ($month % 2 == 0) {  //偶數月份
+        $backbround_class = 'background1';
+        $title_color = 'b_color1';
+    } else {  //單數月份
+        $backbround_class = 'background2';
+        $title_color = 'b_color2';
+    }
+
+    function getMonthSize($month, $year) {
+        switch($month) {
+            case 'January':
+            case 'March':
+            case 'May':
+            case 'July':
+            case 'August':
+            case 'October':
+            case 'December':
+                return '大';
+            case 'April':
+            case 'June':
+            case 'September':
+            case 'November':
+                return '小';
+            case 'February':
+                // 閏年判斷
+                if (($year % 4 == 0 && $year % 100 != 0) || ($year % 400 == 0)) {
+                    return '大'; // 閏年二月有29天，標記為大
+                } else {
+                    return '小'; // 平年二月有28天，標記為小
+                }
+            default:
+                return '';
+        }
+    }
+    
+    // 使用當前年份來測試
+    $currentYear = date('Y');
+    
+    function monthCompare($month, $currentYear) {
+        $mapping = [
+            '1' => getMonthSize('January', $currentYear),
+            '2' => getMonthSize('February', $currentYear),
+            '3' => getMonthSize('March', $currentYear),
+            '4' => getMonthSize('April', $currentYear),
+            '5' => getMonthSize('May', $currentYear),
+            '6' => getMonthSize('June', $currentYear),
+            '7' => getMonthSize('July', $currentYear),
+            '8' => getMonthSize('August', $currentYear),
+            '9' => getMonthSize('September', $currentYear),
+            '10' => getMonthSize('October', $currentYear),
+            '11' => getMonthSize('November', $currentYear),
+            '12' => getMonthSize('December', $currentYear)
+        ];
+        return $mapping[$month];
+    }
+    
+    // 打印陣列來檢查結果
+    // print_r($months);
+    
+    echo monthCompare($month, $currentYear);
+    $monthCompare = monthCompare($month, $currentYear);
+
+    // if(monthCompare($month, $currentYear) == '大'){
+    //     echo '大月'; 
+    // }else{  //非大月其他月份為小月
+    //     echo '小月';
+    // }
+    
+
     echo "<br>";
     $days = date("t",$firstDay);
     echo "這個月有幾天:". $days;
@@ -546,6 +620,41 @@
             $type = 'ch';
         }
     }
+
+
+    // 宣告國定假日的關聯數組
+    $holidays = [
+        '2024-01-01' => '元旦',
+        '2024-02-08' => '春節',
+        '2024-02-09' => '春節',
+        '2024-02-10' => '春節',
+        '2024-02-11' => '春節',
+        '2024-02-12' => '春節',
+        '2024-02-13' => '春節',
+        '2024-02-14' => '春節',
+        '2024-02-28' => '和平紀念日',
+        '2024-04-04' => '兒童節',
+        '2024-04-05' => '兒童節',
+        '2024-05-01' => '勞動節',
+        '2024-06-10' => '端午節',
+        '2024-09-17' => '中秋節',
+        '2024-10-10' => '國慶日',
+
+        '2024-02-03' => 'TEST',
+        '2024-02-04' => 'TEST',
+        '2024-01-31' => 'TEST2',
+        '2024-01-28' => 'TEST3',
+        '2024-01-27' => 'TEST3',
+        '2023-12-31' => 'TEST3',
+        // 添加更多國定假日...
+    ];
+
+    // 打印出所有的國定假日
+    // foreach ($holidays as $date => $holidayName) {  // date=>2024-04-04   // $holidayName=>元旦
+    //     echo "日期: $date, 國定假日: $holidayName" . PHP_EOL;
+    // }
+
+
     if ($type == 'en') {
         echo "<div class='main-mark'>";
         echo "<div class='main-mark-year'>$year</div>";
@@ -574,32 +683,6 @@
             //12  1  2
             //11  12 1 
 
-            // 宣告國定假日的關聯數組
-            $holidays = [
-                '2024-01-01' => '元旦',
-                '2024-02-08' => '春節',
-                '2024-02-09' => '春節',
-                '2024-02-10' => '春節',
-                '2024-02-11' => '春節',
-                '2024-02-12' => '春節',
-                '2024-02-13' => '春節',
-                '2024-02-14' => '春節',
-                '2024-02-28' => '和平紀念日',
-                '2024-04-04' => '兒童節',
-                '2024-04-05' => '兒童節',
-                '2024-05-01' => '勞動節',
-                '2024-06-10' => '端午節',
-                '2024-09-17' => '中秋節',
-                '2024-10-10' => '國慶日',
-
-                '2024-02-03' => 'TEST',
-                '2024-02-04' => 'TEST',
-                '2024-01-31' => 'TEST2',
-                '2024-01-28' => 'TEST3',
-                '2024-01-27' => 'TEST3',
-                // 添加更多國定假日...
-            ];
-
             // 打印出所有的國定假日
             // foreach ($holidays as $date => $holidayName) {  // date=>2024-04-04   // $holidayName=>元旦
             //     echo "日期: $date, 國定假日: $holidayName" . PHP_EOL;
@@ -609,27 +692,28 @@
             $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
 
             if (array_key_exists($day, $holidays)) {  // "指定日期是國定假日";
-                if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                if($c_month != $month){
                         echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='date'>$c_month.'/'.$c_day</div>";
                         echo "<div class='public_holiday'>$holidays[$day]</div>";  //$holidays['2024-01-01']
                         echo "</div>";
-                }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
+                }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
                         echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='date'>$c_month.'/'.$c_day</div>";
                         echo "<div class='public_holiday'>$holidays[$day]</div>";
                         echo "</div>";
-                }else{
+                }*/else{
                     // $c_day=explode("-",$day)[2];  
                     $w=date("w",strtotime($day));
                     if($w==0){  //如果星期幾是 0（星期日）
                             echo "<div class='item holiday holiday-sunday'>";
-                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='date'>$c_month.'/'.$c_day</div>";
                             echo "<div class='public_holiday'>$holidays[$day]</div>";
                             echo "</div>";
                     }else if($w==6){  //如果星期幾是 6（星期六）
                             echo "<div class='item holiday holiday-saturday'>";
-                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='date'>$c_month.'/'.$c_day</div>";
                             echo "<div class='public_holiday'>$holidays[$day]</div>";
                             echo "</div>";
                     }else{  //如果是工作日（即星期一到星期五）
@@ -640,20 +724,21 @@
                     }
                 }
             }else {  // "指定日期不是國定假日";
-                if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                if($c_month != $month){
                         echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='date'>$c_month.'/'.$c_day</div>";
                         echo "</div>";
-                }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
+                }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
                         echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='date'>$c_month.'/'.$c_day</div>";
                         echo "</div>";
-                }else{
+                }*/else{
                     // $c_day=explode("-",$day)[2];  
                     $w=date("w",strtotime($day));
                     if($w==0){  //如果星期幾是 0（星期日）
                             echo "<div class='item holiday holiday-sunday'>";
-                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='date'>$c_month.'/'.$c_day</div>";
                             echo "</div>";
                     }else if($w==6){  //如果星期幾是 6（星期六）
                             echo "<div class='item holiday holiday-saturday'>";
@@ -661,7 +746,7 @@
                             echo "</div>";
                     }else{  //如果是工作日（即星期一到星期五）
                             echo "<div class='item'>";
-                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='date'>$c_month.'/'.$c_day</div>";
                             echo "</div>";
                     }
                 }
@@ -695,38 +780,6 @@
 
             //12  1  2
             //11  12 1 
-
-            // 宣告國定假日的關聯數組
-            $holidays = [
-                '2024-01-01' => '元旦',
-                '2024-02-08' => '春節',
-                '2024-02-09' => '春節',
-                '2024-02-10' => '春節',
-                '2024-02-11' => '春節',
-                '2024-02-12' => '春節',
-                '2024-02-13' => '春節',
-                '2024-02-14' => '春節',
-                '2024-02-28' => '和平紀念日',
-                '2024-04-04' => '兒童節',
-                '2024-04-05' => '兒童節',
-                '2024-05-01' => '勞動節',
-                '2024-06-10' => '端午節',
-                '2024-09-17' => '中秋節',
-                '2024-10-10' => '國慶日',
-
-                '2024-02-03' => 'TEST',
-                '2024-02-04' => 'TEST',
-                '2024-01-31' => 'TEST2',
-                '2024-01-28' => 'TEST3',
-                '2024-01-27' => 'TEST3',
-                // 添加更多國定假日...
-            ];
-
-            // 打印出所有的國定假日
-            // foreach ($holidays as $date => $holidayName) {  // date=>2024-04-04   // $holidayName=>元旦
-            //     echo "日期: $date, 國定假日: $holidayName" . PHP_EOL;
-            // }
-
             /***********************/
             $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
 
