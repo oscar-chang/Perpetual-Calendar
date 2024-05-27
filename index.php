@@ -156,20 +156,7 @@
     // echo "<div class='month'>月份:</div>";
     ?>
 
-    <select onchange="get_month_val()" name="" id="month" class="select">
-        <option class="selectopt" value="1">1</option>
-        <option class="selectopt" value="2">2</option>
-        <option class="selectopt" value="3">3</option>
-        <option class="selectopt" value="4">4</option>
-        <option class="selectopt" value="5">5</option>
-        <option class="selectopt" value="6">6</option>
-        <option class="selectopt" value="7">7</option>
-        <option class="selectopt" value="8">8</option>
-        <option class="selectopt" value="9">9</option>
-        <option class="selectopt" value="10">10</option>
-        <option class="selectopt" value="11">11</option>
-        <option class="selectopt" value="12">12</option>      
-    </select> 月
+    
 
 
     <?php
@@ -214,8 +201,8 @@
         echo "目前中文月份(預設): " . $currentCMonth;
         echo "<br><br>";
 
-        $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
-        header($reUrl);
+        // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
+        // header($reUrl);
         // exit();
     }else{
         $month = $_GET['month'];
@@ -232,14 +219,29 @@
     echo "第一週的開始是第 ".$firstWeekStartDay." 日 (第一天是星期幾 firstWeekStartDay)";
     echo "<br><br>";
     echo "目前月份是:". $month;
+    ?>
 
-    if ($month % 2 == 0) {  //偶數月份
-        $backbround_class = 'background1';
-        $title_color = 'b_color1';
-    } else {  //單數月份
-        $backbround_class = 'background2';
-        $title_color = 'b_color2';
-    }
+    <select onchange="get_month_val()" name="" id="month" class="select">
+        <option class="selectopt" value="1" <?= $month=='1' ? 'selected' : '';?> >1</option>
+        <option class="selectopt" value="2" <?= $month=='2' ? 'selected' : '';?>>2</option>
+        <option class="selectopt" value="3" <?= $month=='3' ? 'selected' : '';?>>3</option>
+        <option class="selectopt" value="4" <?= $month=='4' ? 'selected' : '';?>>4</option>
+        <option class="selectopt" value="5" <?= $month=='5' ? 'selected' : '';?>>5</option>
+        <option class="selectopt" value="6" <?= $month=='6' ? 'selected' : '';?>>6</option>
+        <option class="selectopt" value="7" <?= $month=='7' ? 'selected' : '';?>>7</option>
+        <option class="selectopt" value="8" <?= $month=='8' ? 'selected' : '';?>>8</option>
+        <option class="selectopt" value="9" <?= $month=='9' ? 'selected' : '';?>>9</option>
+        <option class="selectopt" value="10 <?= $month=='10' ? 'selected' : '';?>">10</option>
+        <option class="selectopt" value="11 <?= $month=='11' ? 'selected' : '';?>">11</option>
+        <option class="selectopt" value="12 <?= $month=='12' ? 'selected' : '';?>">12</option>      
+    </select> 月
+
+    <?php 
+    // if ($month % 2 == 0) {  //偶數月份
+    //     $img = rand(0,7).'.png';
+    // } else {  //單數月份
+    //     $img = rand(0,7).'.png';
+    // }
 
     function getMonthSize($month, $year) {
         switch($month) {
@@ -300,6 +302,21 @@
     // }else{  //非大月其他月份為小月
     //     echo '小月';
     // }
+
+    switch ($monthCompare) {
+        case '大':  // 橫式
+            $layout = 'big_cover';
+            $img = 'horizontal/'.rand(0,7).'.png';
+            break;
+        case '小':  // 直式
+            $layout = 'small_cover';
+            $img = 'vertical/'.rand(0,7).'.png';
+            break;
+        
+        default:
+            $layout = 'big_cover';
+            break;
+    }
     
 
     echo "<br>";
