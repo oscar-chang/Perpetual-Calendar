@@ -1,166 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="#">
-  <title>萬年曆作業</title>
-  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-  <style>
-   /*請在這裹撰寫你的CSS*/ 
-   *{
-            font-family: 'Courier New', Courier, monospace;
-        }
-        body {
-            width: 80%;
-            margin: 0 auto;
-            background-image: url('./images/horizontal/pexels-sinarz97-20015727.jpg'); 
-            background-size: cover;
-        }
-        .block_margin_35 {
-            width: 75%;
-        }
-        table {
-            border: 5px double black;
-            border-collapse: collapse;
-            margin: 0 auto;
-        }
-        td {
-            border: 2px black;
-            border-style: groove;
-            padding: 3px 10px;
-        }
 
-        .red {
-            color: red;
-            font-weight:900;
-        }
 
-        .green {
-            color: green;
-            font-weight:900;
-        }
+<?php
 
-        #month {
-            font-size: 18px;
-            padding: 5px 7px;
-            /*appearance: none;*/ /* 清除原生外觀 */
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            /*appearance: none; *//* 清除原生外觀 */
-            /*background-color: transparent;*/ /* 背景透明 */
-            background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 設置模糊半徑 */
-        }
-
-        /* 下拉選單的選項 */
-        .selectopt {
-            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 設置模糊半徑 */
-        }
-
-        /* 滑鼠懸停時的選項樣式 */
-        .selectopt:hover {
-            /*background-color: #f0f0f0;*/ /* 滑鼠懸停時的背景色 */
-            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 設置模糊半徑 */
-        }
-
-        .month_btn {
-            width: 100%;
-            display: inline-block;
-            float: left;
-        }
-
-        .next_month_btn {
-            width: 5%;
-            /* float: left; */
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 2px;
-            text-shadow: black 0.1em 0.1em 0.2em;
-            transition: all 0.2s;
-            right: 20%;
-            top: 75%;
-            position: absolute;
-        }
-        .pre_month_btn {
-            width: 5%;
-            /* float: right; */
-            text-align: center;
-            font-size: 18px;
-            letter-spacing: 2px;
-            text-shadow: black 0.1em 0.1em 0.2em;
-            transition: all 0.2s;
-            left: 20%;
-            top: 75%;
-            position: absolute;
-        }
-        .pre_month_btn > a, .next_month_btn > a {
-            color: white;
-            text-decoration: none;
-            font-size: xxx-large;
-        }
-  </style>
-  <script>
-        function get_month_val() {
-            month = document.getElementById("month").value;
-            $('#month').data('month',month); 
-            // console.log(month);
-
-            var m = $('#month').data('month');
-            var re_url = '?month='+m;
-            window.location.href = re_url;
-        }
-
-        $(document).ready(function(){
-            // 創建 URL 物件並解析 URL 字符串
-            var url = new URL(window.location.href);
-
-            // 獲取 URL 中的 searchParams
-            var searchParams = url.searchParams;
-
-            // 判斷是否存在 param2 參數
-            if (searchParams.has("month")) {
-                const urlParams = new URLSearchParams(window.location.search);
-                var month = urlParams.get('month');;
-                // console.log(month);
-                $('#month').val(month);
-            }
-        });
-
-        // 使用 JavaScript 動態更新時間
-        function updateTime() {
-            var now = new Date();
-            var hours = now.getHours().toString().padStart(2, '0');
-            var minutes = now.getMinutes().toString().padStart(2, '0');
-            var seconds = now.getSeconds().toString().padStart(2, '0');
-            var currentTime = hours + ":" + minutes + ":" + seconds;
-            document.getElementById('current-time').textContent = currentTime;
-            setTimeout(updateTime, 1000); // 每秒更新一次時間
-        }
-    </script>
-</head>
-<body onload="updateTime()">
-<h1>萬年曆 - Oscar</h1>  
-
-<!-- 請在這裹撰寫你的萬年曆程式碼 -->
-    <?php
-
-    $color='red';
-    $color2='green';
-    // echo "<div class='month'>年份:</div>";
-    // echo "<div class='month'>月份:</div>";
-    ?>
-
-    
+$color='red';
+$color2='green';
+// echo "<div class='month'>年份:</div>";
+// echo "<div class='month'>月份:</div>";
+?>
 
 
     <?php
-    echo "<br><br>";
+    echo "<!-- <br><br> -->";
     function mathMonthToChinese($mathMonth) {
         $mapping = [
             1 => '一月',
@@ -187,19 +39,19 @@
     if (!isset($_GET['month']) || empty($_GET['month'])) {
         // $month = date('F');  //英文
         $month = date('n');   //數字
-        echo "目前數字月份(預設): " . $month;
-        echo "<br><br>";
+        echo "<!--"."目前數字月份(預設): " . $month ."-->";
+        echo "<!-- <br><br> -->";
 
         // 獲取當前的月份（英文）
         $currentEMonth = date("F");  
-        echo "目前英文月份(預設): " . $currentEMonth;
-        echo "<br><br>";
+        echo "<!--"."目前英文月份(預設): " . $currentEMonth ."-->";
+        echo "<!-- <br><br> -->";
 
         // 獲取當前的月份（中文）
         // $currentMonth = strftime("%B");
         $currentCMonth = mathMonthToChinese($month);
-        echo "目前中文月份(預設): " . $currentCMonth;
-        echo "<br><br>";
+        echo "<!--"."目前中文月份(預設): " . $currentCMonth ."-->";
+        echo "<!-- <br><br> -->";
 
         // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
         // header($reUrl);
@@ -213,30 +65,16 @@
     // echo $month;
     // $year = '2024';
     $year=date("Y");
-    echo "<br>";
+    echo "<!-- <br><br> -->";
     $firstDay = strtotime(date(date("Y-$month-1")));
     $firstWeekStartDay = date("w",$firstDay);  //第一天是星期幾
-    echo "第一週的開始是第 ".$firstWeekStartDay." 日 (第一天是星期幾 firstWeekStartDay)";
-    echo "<br><br>";
-    echo "目前月份是:". $month;
+    echo "<!--"."第一週的開始是第 ".$firstWeekStartDay." 日 (第一天是星期幾 firstWeekStartDay)" ."-->";
+    echo "<!-- <br><br> -->";
+    echo "<!--"."目前月份是:". $month ."-->";
     ?>
 
-    <select onchange="get_month_val()" name="" id="month" class="select">
-        <option class="selectopt" value="1" <?= $month=='1' ? 'selected' : '';?> >1</option>
-        <option class="selectopt" value="2" <?= $month=='2' ? 'selected' : '';?>>2</option>
-        <option class="selectopt" value="3" <?= $month=='3' ? 'selected' : '';?>>3</option>
-        <option class="selectopt" value="4" <?= $month=='4' ? 'selected' : '';?>>4</option>
-        <option class="selectopt" value="5" <?= $month=='5' ? 'selected' : '';?>>5</option>
-        <option class="selectopt" value="6" <?= $month=='6' ? 'selected' : '';?>>6</option>
-        <option class="selectopt" value="7" <?= $month=='7' ? 'selected' : '';?>>7</option>
-        <option class="selectopt" value="8" <?= $month=='8' ? 'selected' : '';?>>8</option>
-        <option class="selectopt" value="9" <?= $month=='9' ? 'selected' : '';?>>9</option>
-        <option class="selectopt" value="10 <?= $month=='10' ? 'selected' : '';?>">10</option>
-        <option class="selectopt" value="11 <?= $month=='11' ? 'selected' : '';?>">11</option>
-        <option class="selectopt" value="12 <?= $month=='12' ? 'selected' : '';?>">12</option>      
-    </select> 月
 
-    <?php 
+<?php 
     // if ($month % 2 == 0) {  //偶數月份
     //     $img = rand(0,7).'.png';
     // } else {  //單數月份
@@ -294,7 +132,7 @@
     // 打印陣列來檢查結果
     // print_r($months);
     
-    echo monthCompare($month, $currentYear);
+    echo "<!--".monthCompare($month, $currentYear)."-->";
     $monthCompare = monthCompare($month, $currentYear);
 
     // if(monthCompare($month, $currentYear) == '大'){
@@ -305,40 +143,49 @@
 
     switch ($monthCompare) {
         case '大':  // 橫式
-            $layout = 'big_cover';
-            $img = 'horizontal/'.rand(0,7).'.png';
+            $bg_layout = 'big_cover';
+            $bg_img = 'horizontal/'.rand(1,43).'.jpg';
+            $bg_position = 'center';
+            $bg_repeat = 'no-repeat';
+            $bg_size = 'cover';
             break;
         case '小':  // 直式
-            $layout = 'small_cover';
-            $img = 'vertical/'.rand(0,7).'.png';
+            $bg_layout = 'small_cover';
+            $bg_img = 'vertical/'.rand(1,43).'.jpg';
+            $bg_position = '20% 10%';
+            $bg_repeat = 'no-repeat';
+            $bg_size = '50% auto';
             break;
         
         default:
-            $layout = 'big_cover';
+            $bg_layout = 'big_cover';
+            $bg_img = 'horizontal/'.rand(1,43).'.jpg';
+            $bg_position = 'center';
+            $bg_repeat = 'no-repeat';
+            $bg_size = 'cover';
             break;
     }
     
 
-    echo "<br>";
+    echo "<!-- <br><br> -->";
     $days = date("t",$firstDay);
-    echo "這個月有幾天:". $days;
-    echo "<br>";
+    echo "<!--"."這個月有幾天:". $days ."-->";
+    echo "<!-- <br><br> -->";
     $lastDay = strtotime(date("Y-$month-$days"));
-    echo "<br>";
-    echo "最後一天是:". date("Y-m-d",$lastDay);
-    echo "<br>";
-    echo "<br>";
-    echo "今天日期:". date("Y-m-d"); 
-    echo "<br>";
+    echo "<!-- <br><br> -->";
+    echo "<!--"."最後一天是:". date("Y-m-d",$lastDay) ."-->";
+    echo "<!-- <br><br> -->";
+    echo "<!--"."今天日期:". date("Y-m-d") ."-->"; 
+    echo "<!-- <br><br> -->";
     $currentDateTime = date("H:i:s"); // 24小時制格式（時:分:秒）
-    echo "當前時分秒: " . $currentDateTime;
-    echo "<br>";
+    echo "<!--"."當前時分秒: " . $currentDateTime ."-->";
+    echo "<!-- <br><br> -->";
 
     $birthday = '1985-11-22';
-    echo "我的生日是:".$birthday."<br>";
-    echo "生日月份是:".mb_substr ( $birthday, 5, 2 )."<br>";
-    echo "生日日期是:".mb_substr ( $birthday, 8, 2 )."<br>";
-    echo "<br>";
+    echo "<!--"."我的生日是:".$birthday."<br>" ."-->";
+    echo "<!--"."生日月份是:".mb_substr ( $birthday, 5, 2 )."<br>" ."-->";
+    echo "<!--"."生日日期是:".mb_substr ( $birthday, 8, 2 )."<br>" ."-->";
+    echo "<!-- <br><br> -->";
     // $date=$year.'-'.$month.'-'.$i*7+$j-($firstWeekStartDay-1);
     /* 生日處理判斷 */
     $replace=mb_substr($birthday,0,4);
@@ -346,12 +193,12 @@
     $spDate=strtotime($replaceTo); //生日時間戳
     // $dateSec=strtotime($date); //當下時間戳
 
-    echo "<hr>";
+    echo "<!-- <hr><hr> -->";
     $total_week = ceil(($days + ($firstWeekStartDay))/7) ;  // 當月總天數+空白天數/7 取無條件進入
 
     // 输出结果
-    echo "當月總週數為：" . $total_week . " 周";
-    echo "<hr>";
+    echo "<!--"."當月總週數為：" . $total_week . " 周" ."-->";
+    echo "<!-- <hr><hr> -->";
     ?>
 
     <?php 
@@ -369,7 +216,7 @@
         // if($month-1 >=1){
         //     $pre = '';
         // }
-        echo '@'.$month.'@';
+        echo "<!--".'@'.$month.'@' ."-->";
         if($month == '12'){
             $next = 1;
             $pre = $month-1;
@@ -387,14 +234,226 @@
         // }
     ?>
 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="#">
+  <title>萬年曆作業</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  <style>
+   /*請在這裹撰寫你的CSS*/ 
+   *{
+            font-family: 'Courier New', Courier, monospace;
+        }
+        body {
+            width: 80%;
+            margin: 0 auto;
+            /* background-image: url('./images/horizontal/pexels-sinarz97-20015727.jpg');  */
+            background-image: url('./images/<?= $bg_img ?>'); 
+            background-size: cover;
+            background-repeat:no-repeat;
+
+            background-position: <?= $bg_position ?>;
+            background-repeat: <?= $bg_repeat ?>;
+            background-size: <?= $bg_size ?>;
+        }
+        .block_margin_35 {
+            width: 75%;
+        }
+        table {
+            border: 5px double black;
+            border-collapse: collapse;
+            margin: 0 auto;
+        }
+        td {
+            border: 2px black;
+            border-style: groove;
+            padding: 3px 10px;
+        }
+
+        .red {
+            color: red;
+            font-weight:900;
+        }
+
+        .green {
+            color: green;
+            font-weight:900;
+        }
+
+        #month {
+            font-size: 18px;
+            padding: 5px 7px;
+            /*appearance: none;*/ /* 清除原生外觀 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            /*appearance: none; *//* 清除原生外觀 */
+            /*background-color: transparent;*/ /* 背景透明 */
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+            color: white;
+            font-size: larger;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        /* 下拉選單的選項 */
+        .selectopt {
+            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+        }
+
+        /* 滑鼠懸停時的選項樣式 */
+        .selectopt:hover {
+            /*background-color: #f0f0f0;*/ /* 滑鼠懸停時的背景色 */
+            /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+        }
+
+        .month_btn {
+            width: 100%;
+            display: inline-block;
+            float: left;
+        }
+
+        .next_month_btn {
+            width: 5%;
+            /* float: left; */
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.1em 0.1em 0.2em;
+            transition: all 0.2s;
+            right: 20%;
+            top: 75%;
+            position: absolute;
+        }
+        .pre_month_btn {
+            width: 5%;
+            /* float: right; */
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.1em 0.1em 0.2em;
+            transition: all 0.2s;
+            left: 20%;
+            top: 75%;
+            position: absolute;
+        }
+        .pre_month_btn > a, .next_month_btn > a {
+            color: white;
+            text-decoration: none;
+            font-size: xxx-large;
+        }
+  </style>
+  <script>
+        function get_year_val() {
+            var year = document.getElementById('year').value;
+            // console.log(year);
+        }
+
+        function get_month_val() {
+            var month = document.getElementById("month").value;
+            $('#month').data('month',month); 
+            // console.log(month);
+
+            var m = $('#month').data('month');
+            var re_url = '?month='+m;
+            window.location.href = re_url;
+        }
+
+        $(document).ready(function(){
+            // 創建 URL 物件並解析 URL 字符串
+            var url = new URL(window.location.href);
+
+            // 獲取 URL 中的 searchParams
+            var searchParams = url.searchParams;
+
+            // 判斷是否存在 param2 參數
+            if (searchParams.has("month")) {
+                const urlParams = new URLSearchParams(window.location.search);
+                var month = urlParams.get('month');
+                // console.log(month);
+
+                var monthArray = new Array("1","2","3","4","5","6","7","8","9","10","11","12");  
+                if (monthArray.includes(month)) {
+                    $('#month').val(month);
+                    // console.log(x + " is in the monthArray.");
+                } else {
+                    var d = new Date();
+                    var month = d.getMonth()+1;
+                    $('#month').val(month);
+                    var re_url = '?month='+month;
+                    window.location.href = re_url;
+                    // console.log(x + " is not in the monthArray.");
+                }
+                
+            }else{
+                var d = new Date();
+                var month = d.getMonth()+1;
+                $('#month').val(month);
+                var re_url = '?month='+month;
+                window.location.href = re_url;
+            }
+        });
+
+        // 使用 JavaScript 動態更新時間
+        function updateTime() {
+            var now = new Date();
+            var hours = now.getHours().toString().padStart(2, '0');
+            var minutes = now.getMinutes().toString().padStart(2, '0');
+            var seconds = now.getSeconds().toString().padStart(2, '0');
+            var currentTime = hours + ":" + minutes + ":" + seconds;
+            document.getElementById('current-time').textContent = currentTime;
+            setTimeout(updateTime, 1000); // 每秒更新一次時間
+        }
+    </script>
+</head>
+<body onload="updateTime()">
+<!-- <h1>萬年曆 - Oscar</h1>   -->
+
+<!-- 請在這裹撰寫你的萬年曆程式碼 -->
+    <div class="select-date">
+
+        <select onchange="get_year_val()" name="" id="year" class="select">
+            <!-- <option class="selectopt" value="1900">1900</option> -->
+            <?php
+                for ($year = 1900; $year <= 2050; $year++) {
+                    echo "<option class='selectopt' value='$year'>$year</option>";
+                }
+            ?>
+        </select> <!--年-->
+
+        <select onchange="get_month_val()" name="" id="month" class="select">
+            <option class="selectopt" value="1">1</option>
+            <option class="selectopt" value="2">2</option>
+            <option class="selectopt" value="3">3</option>
+            <option class="selectopt" value="4">4</option>
+            <option class="selectopt" value="5">5</option>
+            <option class="selectopt" value="6">6</option>
+            <option class="selectopt" value="7">7</option>
+            <option class="selectopt" value="8">8</option>
+            <option class="selectopt" value="9">9</option>
+            <option class="selectopt" value="10">10</option>
+            <option class="selectopt" value="11">11</option>
+            <option class="selectopt" value="12">12</option>      
+        </select> <!--月-->
+
+    </div>
+
+    
+
     <div class="month_btn">
         <!-- <div class="next_month_btn"><a href="index.php?month=<?= $pre ?>">上個月</a></div> -->
-        <div><?=$month?>月</div>
+        <!--div><?=$month?>月</!--div-->
         <!-- <div class="pre_month_btn"><a href="index.php?month=<?= $next ?>">下個月</a></div> -->
     </div>
 
     <?php 
-    echo "<hr>";
+    // echo "<hr>";
     ?>
     
 
