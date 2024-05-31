@@ -282,6 +282,25 @@ $color2='green';
             font-weight:900;
         }
 
+        #year {
+            font-size: 18px;
+            padding: 5px 7px;
+            /*appearance: none;*/ /* 清除原生外觀 */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            /*appearance: none; *//* 清除原生外觀 */
+            /*background-color: transparent;*/ /* 背景透明 */
+            background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+            color: white;
+            font-size: larger;
+            font-weight: 900;
+            text-align: center;
+            appearance: none;
+        }
+
         #month {
             font-size: 18px;
             padding: 5px 7px;
@@ -298,19 +317,38 @@ $color2='green';
             font-size: larger;
             font-weight: 900;
             text-align: center;
+            appearance: none;
+        }
+
+        /* 樣式設置 option */
+        .select option {
+            /* background-color: #f1f1f1; */
+            /* background:red; */
+            color: #333;
+            /* background-color: #b1b0b063; */
+            padding: 10px;
+            backdrop-filter: blur(10px);
+            /* text-align: left; */
+        }
+
+        /* 下拉選單打開時的背景顏色 */
+        .select:focus {
+            /* background-color: #e1e1e1; */
+            /* background: red; */
+            /*backdrop-filter: blur(10px);*/ /* 設置模糊半徑 */
         }
 
         /* 下拉選單的選項 */
-        .selectopt {
+        .select {
             /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+            /*backdrop-filter: blur(10px);*/ /* 設置模糊半徑 */
         }
 
         /* 滑鼠懸停時的選項樣式 */
-        .selectopt:hover {
+        .select:hover {
             /*background-color: #f0f0f0;*/ /* 滑鼠懸停時的背景色 */
             /*background-color: rgba(255, 255, 255, 0.5);*/ /* 半透明背景 */
-            backdrop-filter: blur(10px); /* 設置模糊半徑 */
+            /*backdrop-filter: blur(10px);*/ /* 設置模糊半徑 */
         }
 
         .month_btn {
@@ -352,16 +390,31 @@ $color2='green';
   <script>
         function get_year_val() {
             var year = document.getElementById('year').value;
+            $('#year').data('year',year); 
             // console.log(year);
-        }
+            var y = $('#year').data('year');
 
-        function get_month_val() {
             var month = document.getElementById("month").value;
             $('#month').data('month',month); 
             // console.log(month);
-
             var m = $('#month').data('month');
-            var re_url = '?month='+m;
+
+            var re_url = '?year='+y+'&month='+m;
+            window.location.href = re_url;
+        }
+
+        function get_month_val() {
+            var year = document.getElementById('year').value;
+            $('#year').data('year',year); 
+            // console.log(year);
+            var y = $('#year').data('year');
+
+            var month = document.getElementById("month").value;
+            $('#month').data('month',month); 
+            // console.log(month);
+            var m = $('#month').data('month');
+
+            var re_url = '?year='+y+'&month='+m;
             window.location.href = re_url;
         }
 
@@ -373,30 +426,54 @@ $color2='green';
             var searchParams = url.searchParams;
 
             // 判斷是否存在 param2 參數
-            if (searchParams.has("month")) {
+            if (searchParams.has("month") && searchParams.has("year")) {
                 const urlParams = new URLSearchParams(window.location.search);
                 var month = urlParams.get('month');
-                // console.log(month);
+                var year = urlParams.get('year');
+                console.log(month);
+                console.log(year);
 
-                var monthArray = new Array("1","2","3","4","5","6","7","8","9","10","11","12");  
-                if (monthArray.includes(month)) {
+                // 定義一個函數來檢查年份是否在範圍內
+                function isYearInRange(year) {
+                    // return yearArray.includes(year);
+                    return year >= 1900 && year <= 2050;
+                }
+                console.log(isYearInRange(year));
+
+                // 定義一個函數來檢查月份是否在範圍內
+                function isMonthInRange(month) {
+                    return month >= 1 && month <= 12;
+                }
+                console.log(isMonthInRange(month));
+
+                if (isMonthInRange(month) == true && isYearInRange(year) == true) {
                     $('#month').val(month);
-                    // console.log(x + " is in the monthArray.");
+                    $('#year').val(year);
+                    console.log("年月 在設定值內.");
                 } else {
                     var d = new Date();
+                    // 獲取當前月份
                     var month = d.getMonth()+1;
+                    // 獲取當前年份
+                    var year = d.getFullYear();
+                    console.log(year);
                     $('#month').val(month);
-                    var re_url = '?month='+month;
+                    $('#year').val(year);
+                    var re_url = '?year='+year+'&month='+month;
                     window.location.href = re_url;
-                    // console.log(x + " is not in the monthArray.");
+                    console.log("年月 不在設定值內.");
                 }
                 
             }else{
                 var d = new Date();
                 var month = d.getMonth()+1;
+                var year = d.getFullYear();
+                console.log(year);
                 $('#month').val(month);
-                var re_url = '?month='+month;
+                $('#year').val(year);
+                var re_url = '?year='+year+'&month='+month;
                 window.location.href = re_url;
+                console.log("年月 參數有少.");
             }
         });
 
