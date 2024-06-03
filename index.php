@@ -148,6 +148,12 @@ $color2='green';
             $bg_position = 'center';
             $bg_repeat = 'no-repeat';
             $bg_size = 'cover';
+            $table = 'table1';
+            $date_color = 'date-color1';
+            $year_color = 'year-color1';
+            $month_color = 'month-color1';
+            $time_color = 'time-color1';
+            $mark = 'mark1';
             break;
         case '小':  // 直式
             $bg_layout = 'small_cover';
@@ -155,6 +161,12 @@ $color2='green';
             $bg_position = '20% 10%';
             $bg_repeat = 'no-repeat';
             $bg_size = '50% auto';
+            $table = 'table2';
+            $date_color = 'date-color2';
+            $year_color = 'year-color2';
+            $month_color = 'month-color2';
+            $time_color = 'time-color2';
+            $mark = 'mark2';
             break;
         
         default:
@@ -498,8 +510,8 @@ $color2='green';
         <select onchange="get_year_val()" name="" id="year" class="select">
             <!-- <option class="selectopt" value="1900">1900</option> -->
             <?php
-                for ($year = 1900; $year <= 2050; $year++) {
-                    echo "<option class='selectopt' value='$year'>$year</option>";
+                for ($r_year = 1900; $r_year <= 2050; $r_year++) {
+                    echo "<option class='selectopt' value='$r_year'>$r_year</option>";
                 }
             ?>
         </select> <!--年-->
@@ -713,11 +725,62 @@ $color2='green';
         font-size: 28px;
     } */
 
-    
+    .table1 {
+        /* text-align: right; */
+    }
+
+    .table2 {
+        float: right;
+    }
+
+    .date-color1 {
+
+    }
+
+    .date-color2 {
+        color: black;
+        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+    }
+
+    .year-color1 {
+
+    }
+
+    .year-color2 {
+        color: black;
+        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+    }
+
+    .month-color1 {
+
+    }
+
+    .month-color2 {
+        color: black;
+        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+    }
+
+    .time-color1 {
+
+    }
+
+    .time-color2 {
+        text-align: right;
+        color: black;
+        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+    }
+
+    .mark1 {
+
+    }
+
+    .mark2 {
+        width: 90%;
+    }
 
     </style>
 
-    <div class="pre_month_btn"><a href="index.php?month=<?= $pre ?>" title="上個月">«</a></div>
+    <div class="pre_month_btn"><a href="index.php?year=<?= $year ?>&month=<?= $pre ?>" title="上個月">«</a></div>
 
     <?php 
 
@@ -809,14 +872,14 @@ $color2='green';
 
 
     if ($type == 'en') {
-        echo "<div class='main-mark'>";
-        echo "<div class='main-mark-year'>$year</div>";
-        echo "<div class='main-mark-month'>$currentEMonth</div>";
+        echo "<div class='main-mark {$mark}'>";
+        echo "<div class='main-mark-year {$year_color}'>$year</div>aaaa";
+        echo "<div class='main-mark-month {$month_color}'>$currentEMonth</div>";
         //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
-        echo "<div class='main-mark-time' id='current-time'>$currentDateTime</div>";
+        echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
         echo "</div>";
 
-        echo "<div class='block-table'>";
+        echo "<div class='block-table {$table}'>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期三')."</div>";
@@ -899,7 +962,7 @@ $color2='green';
                             echo "</div>";
                     }else{  //如果是工作日（即星期一到星期五）
                             echo "<div class='item'>";
-                            echo "<div class='date'>$c_month.'/'.$c_day</div>";
+                            echo "<div class='date {$date_color}'>$c_month.'/'.$c_day</div>";
                             echo "</div>";
                     }
                 }
@@ -907,14 +970,14 @@ $color2='green';
         }
         echo "</div>";
     }else if($type == 'ch') {
-        echo "<div class='main-mark'>";
-        echo "<div class='main-mark-year'>$year</div>";
-        echo "<div class='main-mark-month'>$currentCMonth</div>";
+        echo "<div class='main-mark {$mark}'>";
+        echo "<div class='main-mark-year {$year_color}'>$year</div>";
+        echo "<div class='main-mark-month {$month_color}'>$currentCMonth</div>";
         //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
-        echo "<div class='main-mark-time' id='current-time'>$currentDateTime</div>";
+        echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
         echo "</div>";
 
-        echo "<div class='block-table'>";
+        echo "<div class='block-table {$table}'>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期三')."</div>";
@@ -989,7 +1052,7 @@ $color2='green';
                             echo "</div>";
                     }else{  //如果是工作日（即星期一到星期五）
                             echo "<div class='item'>";
-                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='date {$date_color}'>$c_day</div>";
                             echo "</div>";
                     }
                 }
@@ -1001,7 +1064,7 @@ $color2='green';
     
 
     ?>
-    <div class="next_month_btn"><a href="index.php?month=<?= $next ?>" title="下個月">»</a></div>
+    <div class="next_month_btn"><a href="index.php?year=<?= $year ?>&month=<?= $next ?>" title="下個月">»</a></div>
 </div>
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
   
