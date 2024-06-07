@@ -36,6 +36,7 @@ $color2='green';
     // 設置地區和語言為中文（台灣）
     // setlocale(LC_TIME, 'zh_TW');
     date_default_timezone_set("Asia/Taipei");
+    // $month=$_GET['month']??date("m");
     if (!isset($_GET['month']) || empty($_GET['month'])) {
         // $month = date('F');  //英文
         $month = date('n');   //數字
@@ -61,16 +62,35 @@ $color2='green';
         $currentCMonth = mathMonthToChinese($month);
         $currentEMonth = chineseMonthToEnglish($currentCMonth);
     }
+
+    // $year=date("Y");
+    // echo "<!-- <br><br> -->";
+
+    $year=$_GET['year']??date("Y");
+    echo "<!--"."目前年分(預設): " . $year ."-->";
+
+    // if (!isset($_GET['year']) || empty($_GET['year'])) {
+    //     $year = date('y');   //數字
+    //     echo "<!--"."目前年分(預設): " . $year ."-->";
+    //     echo "<!-- <br><br> -->";
+
+    //     // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
+    //     // header($reUrl);
+    //     // exit();
+    // }else{
+    //     $year = $_GET['year'];
+    //     echo "<!--"."目前年分(預設): " . $year ."-->";
+    // }
     
     // echo $month;
     // $year = '2024';
-    $year=date("Y");
-    echo "<!-- <br><br> -->";
-    $firstDay = strtotime(date(date("Y-$month-1")));
+
+    $firstDay = strtotime(date(date("$year-$month-1")));
     $firstWeekStartDay = date("w",$firstDay);  //第一天是星期幾
     echo "<!--"."第一週的開始是第 ".$firstWeekStartDay." 日 (第一天是星期幾 firstWeekStartDay)" ."-->";
     echo "<!-- <br><br> -->";
     echo "<!--"."目前月份是:". $month ."-->";
+
     ?>
 
 
@@ -154,6 +174,10 @@ $color2='green';
             $month_color = 'month-color1';
             $time_color = 'time-color1';
             $mark = 'mark1';
+            // $pre_btn = 'pre-btn1';
+            // $next_btn = 'next-btn1';
+            $year_select = 'year-mark';
+            $month_select = 'month-mark';
             break;
         case '小':  // 直式
             $bg_layout = 'small_cover';
@@ -167,6 +191,10 @@ $color2='green';
             $month_color = 'month-color2';
             $time_color = 'time-color2';
             $mark = 'mark2';
+            // $pre_btn = 'pre-btn2';
+            // $next_btn = 'next-btn2';
+            $year_select = 'year-mark2';
+            $month_select = 'month-mark2';
             break;
         
         default:
@@ -229,21 +257,35 @@ $color2='green';
         //     $pre = '';
         // }
         echo "<!--".'@'.$month.'@' ."-->";
-        if($month == '12'){
-            $next = 1;
-            $pre = $month-1;
-        }
-        if($month == '1'){
-            $pre = 12;
-            $next = $month+1;
-        }
-        if($month < '12' && $month > '1'){
-            $next = $month+1;
-            $pre = $month-1;
-        }
-        // if($month > '1'){
-            
+        // if($month == '12'){
+        //     $next = 1;
+        //     $pre = $month-1;
         // }
+        // if($month == '1'){
+        //     $pre = 12;
+        //     $next = $month+1;
+        // }
+        // if($month < '12' && $month > '1'){
+        //     $next = $month+1;
+        //     $pre = $month-1;
+        // }
+        
+        if($month-1<1){
+            $pre=12;
+            $pre_year=$year-1;
+        }else{
+            $pre=$month-1;
+            $pre_year=$year;
+        }
+        
+        if($month+1>12){
+            $next=1;
+            $next_year=$year+1;
+        
+        }else{
+            $next=$month+1;
+            $next_year=$year;
+        }
     ?>
 
 <head>
@@ -311,6 +353,7 @@ $color2='green';
             font-weight: 900;
             text-align: center;
             appearance: none;
+            text-shadow: black 0em 0em 0.2em;
         }
 
         #month {
@@ -330,6 +373,7 @@ $color2='green';
             font-weight: 900;
             text-align: center;
             appearance: none;
+            text-shadow: black 0em 0em 0.2em;
         }
 
         /* 樣式設置 option */
@@ -363,6 +407,16 @@ $color2='green';
             /*backdrop-filter: blur(10px);*/ /* 設置模糊半徑 */
         }
 
+        .select-date {
+            float: right;
+            right: 10%;
+            position: absolute;
+            float: right;
+            right: 30%;
+            position: absolute;
+            top: 19%;
+        }
+
         .month_btn {
             width: 100%;
             display: inline-block;
@@ -370,27 +424,27 @@ $color2='green';
         }
 
         .next_month_btn {
-            width: 5%;
+            width: 3%;
             /* float: left; */
             text-align: center;
             font-size: 18px;
             letter-spacing: 2px;
             text-shadow: black 0.1em 0.1em 0.2em;
             transition: all 0.2s;
-            right: 20%;
-            top: 75%;
+            right: 26.5%;
+            top: 18%;
             position: absolute;
         }
         .pre_month_btn {
-            width: 5%;
+            width: 3%;
             /* float: right; */
             text-align: center;
             font-size: 18px;
             letter-spacing: 2px;
             text-shadow: black 0.1em 0.1em 0.2em;
             transition: all 0.2s;
-            left: 20%;
-            top: 75%;
+            left: 60%;
+            top: 18%;
             position: absolute;
         }
         .pre_month_btn > a, .next_month_btn > a {
@@ -507,7 +561,7 @@ $color2='green';
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
     <div class="select-date">
 
-        <select onchange="get_year_val()" name="" id="year" class="select">
+        <select onchange="get_year_val()" name="" id="year" class="select <?=$year_select?>">
             <!-- <option class="selectopt" value="1900">1900</option> -->
             <?php
                 for ($r_year = 1900; $r_year <= 2050; $r_year++) {
@@ -516,7 +570,7 @@ $color2='green';
             ?>
         </select> <!--年-->
 
-        <select onchange="get_month_val()" name="" id="month" class="select">
+        <select onchange="get_month_val()" name="" id="month" class="select <?=$month_select?>">
             <option class="selectopt" value="1">1</option>
             <option class="selectopt" value="2">2</option>
             <option class="selectopt" value="3">3</option>
@@ -689,7 +743,7 @@ $color2='green';
         font-family: fantasy;
         letter-spacing: 12px;
         color: white;
-        text-align: right;
+        text-align: left;
     }
 
     .main-mark-month {
@@ -697,15 +751,27 @@ $color2='green';
         font-family: fantasy;
         letter-spacing: 12px;
         color: white;
-        text-align: right;
+        text-align: left;
+        font-weight: 900;
     }
 
     .main-mark-time {
-        font-size: 60px;
+        font-size: 40px;
+        font-weight: 100;
         font-family: fantasy;
         letter-spacing: 12px;
         color: white;
-        text-align: left;
+        text-align: center;
+    }
+
+    .year-mark2 {
+        color: gray !important;
+        text-shadow: white 0em 0em 0.2em !important;
+    }
+
+    .month-mark2 {
+        color: gray !important;
+        text-shadow: white 0em 0em 0.2em !important;
     }
 
     /* .holiday-sunday {
@@ -748,6 +814,7 @@ $color2='green';
 
     .year-color2 {
         color: black;
+        text-align: right;
         text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
     }
 
@@ -757,6 +824,7 @@ $color2='green';
 
     .month-color2 {
         color: black;
+        text-align: right;
         text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
     }
 
@@ -775,12 +843,29 @@ $color2='green';
     }
 
     .mark2 {
-        width: 90%;
+        width: 95%;
     }
+
+    .next-btn1 {
+
+    }
+
+    .next-btn2 {
+        right: 4%;
+    }
+
+    .pre-btn1 {
+
+    }
+
+    .pre-btn2 {
+        left: 46%;
+    }
+
 
     </style>
 
-    <div class="pre_month_btn"><a href="index.php?year=<?= $year ?>&month=<?= $pre ?>" title="上個月">«</a></div>
+    <div class="pre_month_btn <?=$pre_btn?>"><a href="index.php?year=<?= $pre_year ?>&month=<?= $pre ?>" title="上個月">«</a></div>
 
     <?php 
 
@@ -1064,7 +1149,7 @@ $color2='green';
     
 
     ?>
-    <div class="next_month_btn"><a href="index.php?year=<?= $year ?>&month=<?= $next ?>" title="下個月">»</a></div>
+    <div class="next_month_btn <?=$next_btn?>"><a href="index.php?year=<?= $next_year ?>&month=<?= $next ?>" title="下個月">»</a></div>
 </div>
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
   
