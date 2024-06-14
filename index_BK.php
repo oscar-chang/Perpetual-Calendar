@@ -1087,23 +1087,6 @@ $color2='green';
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期六')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
 
-    }else if($type == 'ch') {
-        echo "<div class='main-mark {$mark}'>";
-        echo "<div class='main-mark-year {$year_color}'>$year</div>";
-        echo "<div class='main-mark-month {$month_color}'>$currentCMonth</div>";
-        //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
-        echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
-        echo "</div>";
-
-        echo "<div class='block-table {$table}'>";
-        echo "<div class='item-header'>星期一</div>";
-        echo "<div class='item-header'>星期二</div>";
-        echo "<div class='item-header'>星期三</div>";
-        echo "<div class='item-header'>星期四</div>";
-        echo "<div class='item-header'>星期五</div>";
-        echo "<div class='item-header'>星期六</div>";
-        echo "<div class='item-header'>星期日</div>";
-    }
 
         foreach($days as $day){
             $c_month=explode("-",$day)[1]; 
@@ -1191,10 +1174,97 @@ $color2='green';
             }
         }
         echo "</div>";
-    
-
+    }else if($type == 'ch') {
+        echo "<div class='main-mark {$mark}'>";
+        echo "<div class='main-mark-year {$year_color}'>$year</div>";
+        echo "<div class='main-mark-month {$month_color}'>$currentCMonth</div>";
+        //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
+        echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
         echo "</div>";
-    // }
+
+        echo "<div class='block-table {$table}'>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期三')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期四')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期五')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期六')."</div>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
+
+
+        foreach($days as $day){
+            $c_month=explode("-",$day)[1]; 
+            // echo $day;
+            $pre_month=$month-1;
+            $next_month=$month+1;
+            // echo $pre_month;
+
+            //12  1  2
+            //11  12 1 
+            /***********************/
+            $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
+
+            if (array_key_exists($day, $holidays)) {  // "指定日期是國定假日";
+                if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='public_holiday'>$holidays[$day]</div>";  //$holidays['2024-01-01']
+                        echo "</div>";
+                }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "<div class='public_holiday'>$holidays[$day]</div>";
+                        echo "</div>";
+                }else{
+                    // $c_day=explode("-",$day)[2];  
+                    $w=date("w",strtotime($day));
+                    if($w==0){  //如果星期幾是 0（星期日）
+                            echo "<div class='item holiday holiday-sunday'>";
+                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "</div>";
+                    }else if($w==6){  //如果星期幾是 6（星期六）
+                            echo "<div class='item holiday holiday-saturday'>";
+                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "</div>";
+                    }else{  //如果是工作日（即星期一到星期五）
+                            echo "<div class='item weekday'>";
+                            echo "<div class='date'>$c_day</div>";
+                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "</div>";
+                    }
+                }
+            }else {  // "指定日期不是國定假日";
+                if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "</div>";
+                }else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
+                        echo "<div class='item not-month'>";
+                        echo "<div class='date'>$c_day</div>";
+                        echo "</div>";
+                }else{
+                    // $c_day=explode("-",$day)[2];  
+                    $w=date("w",strtotime($day));
+                    if($w==0){  //如果星期幾是 0（星期日）
+                            echo "<div class='item holiday holiday-sunday'>";
+                            echo "<div class='date'>$c_day</div>";
+                            echo "</div>";
+                    }else if($w==6){  //如果星期幾是 6（星期六）
+                            echo "<div class='item holiday holiday-saturday'>";
+                            echo "<div class='date'>$c_day</div>";
+                            echo "</div>";
+                    }else{  //如果是工作日（即星期一到星期五）
+                            echo "<div class='item'>";
+                            echo "<div class='date {$date_color}'>$c_day</div>";
+                            echo "</div>";
+                    }
+                }
+            }
+        }
+        echo "</div>";
+    }
 
     
 
