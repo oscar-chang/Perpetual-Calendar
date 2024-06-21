@@ -957,17 +957,17 @@ $color2='green';
 
     .holiday > .public_holiday {
         /* font-weight: bold; */
-        color: red;
-        text-shadow: none;
-        font-size: large;
-        text-shadow: white 0.07em 0.07em 0.05em;
+        color: red!important;
+        text-shadow: none!important;
+        font-size: large!important;
+        text-shadow: white 0.07em 0.07em 0.05em!important;
     }
 
     .weekday > .public_holiday {
         /* font-weight: bold; */
-        color: red;
-        text-shadow: none;
-        font-size: large;
+        color: red!important;
+        text-shadow: none!important;
+        font-size: large!important;
         /* text-shadow: white 0.07em 0.07em 0.05em; */
     }
 
@@ -981,11 +981,12 @@ $color2='green';
     }
 
     .public_holiday {
-        display: block;
-        font-size: 14px;
-        font-weight: 100;
-        text-align: center;
-        letter-spacing: 2px;
+        display: block!important;
+        font-size: 14px!important;
+        font-weight: 100!important;
+        text-align: center!important;
+        letter-spacing: 2px!important;
+        padding-right: 0px!important;
     }
 
     .main-mark {
@@ -1190,13 +1191,13 @@ $color2='green';
 
     function chineseWeekdayToEnglish($chineseWeekday) {
         $mapping = [
-            '星期一' => 'Sunday',
-            '星期二' => 'Monday',
-            '星期三' => 'Tuesday',
-            '星期四' => 'Wednesday',
-            '星期五' => 'Thursday',
-            '星期六' => 'Friday',
-            '星期日' => 'Saturday',
+            '星期日' => 'Sunday',
+            '星期一' => 'Monday',
+            '星期二' => 'Tuesday',
+            '星期三' => 'Wednesday',
+            '星期四' => 'Thursday',
+            '星期五' => 'Friday',
+            '星期六' => 'Saturday',
         ];
     
         return $mapping[$chineseWeekday];
@@ -1233,27 +1234,27 @@ $color2='green';
     // 宣告國定假日的關聯數組 //無指定年
     $holidays = [
         '01-01' => '元旦',
-        '02-08' => '春節',  //農曆正月初一至初三
-        '02-09' => '春節',  //農曆正月初一至初三
-        '02-10' => '春節',  //農曆正月初一至初三
-        '02-11' => '春節',  //農曆正月初一至初三
-        '02-12' => '春節',  //農曆正月初一至初三
-        '02-13' => '春節',  //農曆正月初一至初三
-        '02-14' => '春節',  //農曆正月初一至初三
+        // '02-08' => '春節',  //農曆正月初一至初三
+        // '02-09' => '春節',  //農曆正月初一至初三
+        // '02-10' => '春節',  //農曆正月初一至初三
+        // '02-11' => '春節',  //農曆正月初一至初三
+        // '02-12' => '春節',  //農曆正月初一至初三
+        // '02-13' => '春節',  //農曆正月初一至初三
+        // '02-14' => '春節',  //農曆正月初一至初三
         '02-28' => '和平紀念日',
         '04-04' => '兒童節',
         '04-05' => '清明節',
         '05-01' => '勞動節',
-        '06-10' => '端午節', //‍端午節：農曆五月初五
-        '09-17' => '中秋節', //‍中秋節：農曆八月十五
+        // '06-10' => '端午節', //‍端午節：農曆五月初五
+        // '09-17' => '中秋節', //‍中秋節：農曆八月十五
         '10-10' => '國慶日',
 
-        '02-03' => 'TEST',
-        '02-04' => 'TEST',
-        '01-31' => 'TEST2',
-        '01-28' => 'TEST3',
-        '01-27' => 'TEST3',
-        '12-31' => 'TEST3',
+        // '02-03' => 'TEST',
+        // '02-04' => 'TEST',
+        // '01-31' => 'TEST2',
+        // '01-28' => 'TEST3',
+        // '01-27' => 'TEST3',
+        // '12-31' => 'TEST3',
         // 添加更多國定假日...
     ];
 
@@ -1320,13 +1321,14 @@ $color2='green';
         echo "</div>";
 
         echo "<div class='block-table {$table}'>";
+        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期三')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期四')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期五')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期六')."</div>";
-        echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
+        
 
     }else if($type == 'ch') {
         echo "<div class='main-mark {$mark}'>";
@@ -1339,13 +1341,14 @@ $color2='green';
         echo "</div>";
 
         echo "<div class='block-table {$table}'>";
+        echo "<div class='item-header'>星期日</div>";
         echo "<div class='item-header'>星期一</div>";
         echo "<div class='item-header'>星期二</div>";
         echo "<div class='item-header'>星期三</div>";
         echo "<div class='item-header'>星期四</div>";
         echo "<div class='item-header'>星期五</div>";
         echo "<div class='item-header'>星期六</div>";
-        echo "<div class='item-header'>星期日</div>";
+        
     }
 
     
@@ -1375,48 +1378,76 @@ $color2='green';
 
             // $tmp_day=solarToLunar(explode("-",$day)[0],explode("-",$day)[1],explode("-",$day)[2]);
 
+            // 農曆宣告
+            $lunar = new Lunar();
+            $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+            $lunar_day = $l_day[1].'-'.$l_day[2];
+            if($lunar_day == '正月-初一' || $lunar_day == '正月-初二' || $lunar_day == '正月-初三' || $lunar_day == '正月-初四' || $lunar_day == '正月-初五') {
+                // $weekday_day = '春節';
+                $weekday = 'weekday';
+                $p_holiday = 'public_holiday';
+                $lunar_date = '春節';
+            }else if($lunar_day == '五月-初五') {
+                // $weekday_day = '端午節';
+                $weekday = 'weekday';
+                $p_holiday = 'public_holiday';
+                $lunar_date = '端午節';
+            }else if($lunar_day == '八月-十五') {
+                // $weekday_day = '中秋節';
+                $weekday = 'weekday';
+                $p_holiday = 'public_holiday';
+                $lunar_date = '中秋節';
+            }else{
+                $weekday_day = '';
+                $weekday = '';
+                $p_holiday = '';
+                $lunar_date = $l_day[2];
+                if($lunar_date == '初一') {
+                    $lunar_date = $l_day[1];
+                }
+            }
+
             // if (array_key_exists($day, $holidays)) {  // "指定日期是國定假日";  //只顯示當年國定假日
             if (array_key_exists($m_day, $holidays)) {  // "指定日期是國定假日";  //顯示每一年國定假日
                 // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
-                if($c_month != $month){
-                        echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
-                        echo "<div class='public_holiday'>$holidays[$m_day] </div>";  //$holidays['2024-01-01']
-                        echo "</div>";
-                }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
-                        echo "<div class='item not-month'>";
-                        echo "<div class='date'>$c_day</div>";
-                        echo "<div class='public_holiday'>$holidays[$day]</div>";
-                        echo "</div>";
-                }*/else{
-                    // $c_day=explode("-",$day)[2];  
-                    $w=date("w",strtotime($day));
-                    if($w==0){  //如果星期幾是 0（星期日）
-                            echo "<div class='item holiday holiday-sunday'>";
+                    if($c_month != $month){
+                            echo "<div class='item not-month'>";
                             echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$m_day] </div>";
+                            echo "<div class='public_holiday {$p_holiday}'>$holidays[$m_day] </div>";  //$holidays['2024-01-01']
                             echo "</div>";
-                    }else if($w==6){  //如果星期幾是 6（星期六）
-                            echo "<div class='item holiday holiday-saturday'>";
+                    }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
+                            echo "<div class='item not-month'>";
                             echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$m_day]</div>";
+                            echo "<div class='public_holiday'>$holidays[$day]</div>";
                             echo "</div>";
-                    }else{  //如果是工作日（即星期一到星期五）
-                            echo "<div class='item weekday'>";
-                            echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$m_day]</div>";
-                            echo "</div>";
+                    }*/else{
+                        // $c_day=explode("-",$day)[2];  
+                        $w=date("w",strtotime($day));
+                        if($w==0){  //如果星期幾是 0（星期日）
+                                echo "<div class='item holiday holiday-sunday {$weekday}'>";
+                                echo "<div class='date'>$c_day</div>";
+                                echo "<div class='public_holiday {$p_holiday}'>$holidays[$m_day] </div>";
+                                echo "</div>";
+                        }else if($w==6){  //如果星期幾是 6（星期六）
+                                echo "<div class='item holiday holiday-saturday {$weekday}'>";
+                                echo "<div class='date'>$c_day</div>";
+                                echo "<div class='public_holiday {$p_holiday}'>$holidays[$m_day]</div>";
+                                echo "</div>";
+                        }else{  //如果是工作日（即星期一到星期五）
+                                echo "<div class='item weekday {$weekday}'>";
+                                echo "<div class='date'>$c_day</div>";
+                                echo "<div class='public_holiday {$p_holiday}'>$holidays[$m_day]</div>";
+                                echo "</div>";
+                        }
                     }
-                }
             }else {  // "指定日期不是國定假日";
                 // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
                 if($c_month != $month){
                         echo "<div class='item not-month'>";
                         echo "<div class='date'>$c_day</div>";
                         echo "<div class='date {$l_date_color}'>";
-                        $lunar = new Lunar();
-                        $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
-                        print_r($l_day[2]);
+                        // echo $lunar_day;
+                        echo $lunar_date;
                         echo "</div>";
                         echo "</div>";
                 }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
@@ -1426,41 +1457,37 @@ $color2='green';
                 }*/else{
                     // $c_day=explode("-",$day)[2];  
                     if($c_day == $today && $month == $today_month && $year == $today_year){
-                        echo "<div class='item'>";
+                        echo "<div class='item {$weekday}'>";
                         echo "<div class='date {$date_color} date-today'>$c_day</div>";
-                        echo "<div class='date {$l_date_color}'>";
-                        $lunar = new Lunar();
-                        $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
-                        print_r($l_day[2]);
+                        echo "<div class='date {$l_date_color} {$p_holiday}'>";
+                        // echo $lunar_day;
+                        echo $lunar_date;
                         echo "</div>";
                         echo "</div>";
                     }else{
                         $w=date("w",strtotime($day));
                         if($w==0){  //如果星期幾是 0（星期日）
-                                echo "<div class='item holiday holiday-sunday'>";
+                                echo "<div class='item holiday holiday-sunday {$weekday}'>";
                                 echo "<div class='date'>$c_day</div>";
-                                echo "<div class='date {$l_date_color}'>";
-                                $lunar = new Lunar();
-                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
-                                print_r($l_day[2]);
+                                echo "<div class='date {$l_date_color} {$p_holiday}'>";
+                                // echo $lunar_day;
+                                echo $lunar_date;
                                 echo "</div>";
                                 echo "</div>";
                         }else if($w==6){  //如果星期幾是 6（星期六）
-                                echo "<div class='item holiday holiday-saturday'>";
+                                echo "<div class='item holiday holiday-saturday {$weekday}'>";
                                 echo "<div class='date'>$c_day</div>";
-                                echo "<div class='date {$l_date_color}'>";
-                                $lunar = new Lunar();
-                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
-                                print_r($l_day[2]);
+                                echo "<div class='date {$l_date_color} {$p_holiday}'>";
+                                // echo $lunar_day;
+                                echo $lunar_date;
                                 echo "</div>";
                                 echo "</div>";
                         }else{  //如果是工作日（即星期一到星期五）
-                                echo "<div class='item'>";
+                                echo "<div class='item {$weekday}'>";
                                 echo "<div class='date {$date_color}'>$c_day</div>";
-                                echo "<div class='date {$l_date_color}'>";
-                                $lunar = new Lunar();
-                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
-                                print_r($l_day[2]);
+                                echo "<div class='date {$l_date_color} {$p_holiday}'>";
+                                // echo $lunar_day;
+                                echo $lunar_date;
                                 echo "</div>";
                                 echo "</div>";
                         }
