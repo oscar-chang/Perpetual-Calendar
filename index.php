@@ -3,6 +3,15 @@
 
 
 <?php
+include 'api/LunarCalendar.php';
+
+// function demo() {
+//     $lunar = new Lunar();
+//     $month = $lunar->convertSolarToLunar(2018, 1, 2);
+//     echo '***';
+//     print_r($month);
+//     echo '***';
+// }
 
 $color='red';
 $color2='green';
@@ -60,6 +69,26 @@ $color2='green';
         // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
         // header($reUrl);
         // exit();
+    }else if($_GET['month'] > 12 || $_GET['month'] < 1){
+        // $month = date('F');  //英文
+        $month = date('n');   //數字
+        echo "<!--"."目前數字月份(預設): " . $month ."-->";
+        echo "<!-- <br><br> -->";
+
+        // 獲取當前的月份（英文）
+        $currentEMonth = date("F");  
+        echo "<!--"."目前英文月份(預設): " . $currentEMonth ."-->";
+        echo "<!-- <br><br> -->";
+
+        // 獲取當前的月份（中文）
+        // $currentMonth = strftime("%B");
+        $currentCMonth = mathMonthToChinese($month);
+        echo "<!--"."目前中文月份(預設): " . $currentCMonth ."-->";
+        echo "<!-- <br><br> -->";
+
+        // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
+        // header($reUrl);
+        // exit();
     }else{
         $month = $_GET['month'];
         $currentCMonth = mathMonthToChinese($month);
@@ -69,23 +98,24 @@ $color2='green';
     // $year=date("Y");
     // echo "<!-- <br><br> -->";
 
-    $year=$_GET['year']??date("Y");
-    echo "<!--"."目前年分(預設): " . $year ."-->";
+    // $year=$_GET['year']??date("Y");
+    
     // echo $today_year;
     // echo $year;
 
-    // if (!isset($_GET['year']) || empty($_GET['year'])) {
-    //     $year = date('y');   //數字
-    //     echo "<!--"."目前年分(預設): " . $year ."-->";
-    //     echo "<!-- <br><br> -->";
+    if (!isset($_GET['year']) || empty($_GET['year'])) {
+        $year = date('Y');   //數字
+        echo "<!--"."目前年分(預設): " . $year ."-->";
+        echo "<!-- <br><br> -->";
 
-    //     // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
-    //     // header($reUrl);
-    //     // exit();
-    // }else{
-    //     $year = $_GET['year'];
-    //     echo "<!--"."目前年分(預設): " . $year ."-->";
-    // }
+        // $reUrl = "Location: http://localhost/php-homework/WebBackend-Perpetual-Calendar-oscar-chang/index.php?2";
+        // header($reUrl);
+        // exit();
+    }else{
+        $year = $_GET['year'];
+        echo "<!--"."目前年分(預設): " . $year ."-->";
+    }
+    echo "<!--"."目前年分(預設): " . $year ."-->";
     
     // echo $month;
     // $year = '2024';
@@ -175,9 +205,11 @@ $color2='green';
             $bg_size = 'cover';
             $table = 'table1';
             $date_color = 'date-color1';
+            $l_date_color = 'l-date-color1';
             // $date_size = 'date-size1';
             $year_color = 'year-color1';
             $month_color = 'month-color1';
+            $cz_color = 'cz-color1';
             $time_color = 'time-color1';
             $mark = 'mark1';
             // $pre_btn = 'pre-btn1';
@@ -190,12 +222,14 @@ $color2='green';
             $bg_img = 'vertical/'.rand(1,43).'.jpg';
             $bg_position = '20% 10%';
             $bg_repeat = 'no-repeat';
-            $bg_size = '50% auto';
+            $bg_size = '35% auto';
             $table = 'table2';
             $date_color = 'date-color2';
+            $l_date_color = 'l-date-color2';
             // $date_size = 'date-size2';
             $year_color = 'year-color2';
             $month_color = 'month-color2';
+            $cz_color = 'cz-color2';
             $time_color = 'time-color2';
             $mark = 'mark2';
             // $pre_btn = 'pre-btn2';
@@ -248,6 +282,9 @@ $color2='green';
     // 输出结果
     echo "<!--"."當月總週數為：" . $total_week . " 周" ."-->";
     echo "<!-- <hr><hr> -->";
+
+   
+    
     ?>
 
     <?php 
@@ -305,6 +342,16 @@ $color2='green';
                 $type = 'ch';
             }
         }
+
+
+        // $gan = array("甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸");
+        // $zhi = array("子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥");
+        // $shengxiao = array("鼠", "牛", "虎", "兔", "龍", "蛇", "馬", "羊", "猴", "雞", "狗", "豬");
+
+        // $shengxiaoIndex = ($year - 4) % 12;
+        // // $ganzhi = $gan[$ganIndex] . $zhi[$zhiIndex];
+        // $shengxiao = $shengxiao[$shengxiaoIndex];
+        
     ?>
 
 <head>
@@ -484,7 +531,7 @@ $color2='green';
         }
         /* .radio .button:hover {background: #bbb; color: #fff; } */
         .radio .round {border-radius: 5px; }
-        .lan_hover {background: #bbb!important; color: #fff!important;}
+        .lan_hover {background: black!important; color: #fff!important;font-weight: 900;border-style: groove;}
         .language_box{
             position: absolute;
             left: 64%;
@@ -626,12 +673,12 @@ $color2='green';
                     $('#year').val(year);
                     var type_tmp = urlParams.get('type');
                     if(type_tmp == 'en' || type_tmp == 'ch') {
-                        
+                        var type = type_tmp;
                     }else{
                         var type = 'en';
-                        var re_url = '?year='+year+'&month='+month+'&type='+type;
-                        window.location.href = re_url;
                     }
+                    var re_url = '?year='+year+'&month='+month+'&type='+type;
+                    window.location.href = re_url;
                     console.log("年月 不在設定值內.");
                 }
                 
@@ -729,13 +776,13 @@ $color2='green';
         margin: 0 auto;
         transition: .2s all;
         backdrop-filter: blur(2px);
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.7);
     }
     .block-table:hover {
         background-color: rgba(0, 0, 0, .1);
         /* backdrop-filter: invert(80%); */
         backdrop-filter: blur(2px);
-        background-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.7);
     }
     .item{
         margin-left: -1px;
@@ -793,9 +840,9 @@ $color2='green';
         /* background:pink; */
         font-weight: bold;
         color: red;
-        text-shadow: none;
+        /* text-shadow: none; */
         font-size: x-large;
-        text-shadow: white 0.05em 0.05em 0.2em;
+        text-shadow: white 0.05em 0.05em 0.02em;
     }
 
     .date {
@@ -803,7 +850,7 @@ $color2='green';
         /* letter-spacing: 2px; */
         text-align: right;
         padding-right: 20px;
-        text-shadow: black 0.1em 0.1em 0.2em;
+        text-shadow: black 0.07em 0.07em 0.05em;
         transition: all 0.2s;
     }
 
@@ -824,7 +871,7 @@ $color2='green';
         color: red;
         text-shadow: none;
         font-size: large;
-        text-shadow: white 0.05em 0.05em 0.2em;
+        text-shadow: white 0.07em 0.07em 0.05em;
     }
 
     .weekday > .public_holiday {
@@ -832,7 +879,7 @@ $color2='green';
         color: red;
         text-shadow: none;
         font-size: large;
-        text-shadow: white 0.05em 0.05em 0.2em;
+        /* text-shadow: white 0.07em 0.07em 0.05em; */
     }
 
     .weekday > .date{
@@ -874,6 +921,7 @@ $color2='green';
         color: white;
         text-align: center;
         font-weight: 900;
+        text-shadow: black 0.07em 0.07em 0.01em;
     }
 
     .main-mark-time {
@@ -926,7 +974,20 @@ $color2='green';
 
     .date-color2 {
         color: black;
-        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+        text-shadow: #a3a3a3 0.05em 0.05em 0.02em;
+    }
+
+    .l-date-color1 {
+        text-shadow: black 0.05em 0.05em 0.07em;
+        font-size: 14px!important;
+        letter-spacing: 8px;
+    }
+
+    .l-date-color2 {
+        color: black;
+        text-shadow: initial!important;
+        font-size: 14px!important;
+        letter-spacing: 8px;
     }
 
     .date-today {
@@ -948,6 +1009,16 @@ $color2='green';
     }
 
     .month-color2 {
+        color: black;
+        text-align: right;
+        text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
+    }
+
+    .cz-color1 {
+
+    }
+
+    .cz-color2 {
         color: black;
         text-align: right;
         text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
@@ -1037,30 +1108,57 @@ $color2='green';
     }
 
 
-    // 宣告國定假日的關聯數組
-    $holidays = [
-        '2024-01-01' => '元旦',
-        '2024-02-08' => '春節',
-        '2024-02-09' => '春節',
-        '2024-02-10' => '春節',
-        '2024-02-11' => '春節',
-        '2024-02-12' => '春節',
-        '2024-02-13' => '春節',
-        '2024-02-14' => '春節',
-        '2024-02-28' => '和平紀念日',
-        '2024-04-04' => '兒童節',
-        '2024-04-05' => '兒童節',
-        '2024-05-01' => '勞動節',
-        '2024-06-10' => '端午節',
-        '2024-09-17' => '中秋節',
-        '2024-10-10' => '國慶日',
+    // 宣告國定假日的關聯數組 //指定年
+    // $holidays = [
+    //     '2024-01-01' => '元旦',
+    //     '2024-02-08' => '春節',
+    //     '2024-02-09' => '春節',
+    //     '2024-02-10' => '春節',
+    //     '2024-02-11' => '春節',
+    //     '2024-02-12' => '春節',
+    //     '2024-02-13' => '春節',
+    //     '2024-02-14' => '春節',
+    //     '2024-02-28' => '和平紀念日',
+    //     '2024-04-04' => '兒童節',
+    //     '2024-04-05' => '兒童節',
+    //     '2024-05-01' => '勞動節',
+    //     '2024-06-10' => '端午節',
+    //     '2024-09-17' => '中秋節',
+    //     '2024-10-10' => '國慶日',
 
-        '2024-02-03' => 'TEST',
-        '2024-02-04' => 'TEST',
-        '2024-01-31' => 'TEST2',
-        '2024-01-28' => 'TEST3',
-        '2024-01-27' => 'TEST3',
-        '2023-12-31' => 'TEST3',
+    //     '2024-02-03' => 'TEST',
+    //     '2024-02-04' => 'TEST',
+    //     '2024-01-31' => 'TEST2',
+    //     '2024-01-28' => 'TEST3',
+    //     '2024-01-27' => 'TEST3',
+    //     '2023-12-31' => 'TEST3',
+    //     // 添加更多國定假日...
+    // ];
+
+    // 宣告國定假日的關聯數組 //無指定年
+    $holidays = [
+        '01-01' => '元旦',
+        '02-08' => '春節',  //農曆正月初一至初三
+        '02-09' => '春節',  //農曆正月初一至初三
+        '02-10' => '春節',  //農曆正月初一至初三
+        '02-11' => '春節',  //農曆正月初一至初三
+        '02-12' => '春節',  //農曆正月初一至初三
+        '02-13' => '春節',  //農曆正月初一至初三
+        '02-14' => '春節',  //農曆正月初一至初三
+        '02-28' => '和平紀念日',
+        '04-04' => '兒童節',
+        '04-05' => '清明節',
+        '05-01' => '勞動節',
+        '06-10' => '端午節', //‍端午節：農曆五月初五
+        '09-17' => '中秋節', //‍中秋節：農曆八月十五
+        '10-10' => '國慶日',
+
+        '02-03' => 'TEST',
+        '02-04' => 'TEST',
+        '01-31' => 'TEST2',
+        '01-28' => 'TEST3',
+        '01-27' => 'TEST3',
+        '12-31' => 'TEST3',
         // 添加更多國定假日...
     ];
 
@@ -1069,10 +1167,16 @@ $color2='green';
     //     echo "日期: $date, 國定假日: $holidayName" . PHP_EOL;
     // }
 
-
+    // echo $shengxiao;
+    $lunar = new Lunar();
+    $l_day = $lunar->convertSolarToLunar($year,'01','01');
+    // var_dump($l_day);
+// echo $lun_day;
     if ($type == 'en') {
         echo "<div class='main-mark {$mark}'>";
-        echo "<div class='main-mark-year {$year_color}'>$year</div>";
+        echo "<div class='main-mark-year {$year_color}'>$year <span class='chinese_zodiac {$cz_color}'>";
+        print_r($l_day[6]);
+        echo "</span></div>";
         echo "<div class='main-mark-month {$month_color}'>$currentEMonth</div>";
         //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
         echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
@@ -1089,7 +1193,9 @@ $color2='green';
 
     }else if($type == 'ch') {
         echo "<div class='main-mark {$mark}'>";
-        echo "<div class='main-mark-year {$year_color}'>$year</div>";
+        echo "<div class='main-mark-year {$year_color}'>$year <span class='chinese_zodiac {$cz_color}'>";
+        print_r($l_day[6]);
+        echo "</span></div>";
         echo "<div class='main-mark-month {$month_color}'>$currentCMonth</div>";
         //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
         echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
@@ -1104,6 +1210,8 @@ $color2='green';
         echo "<div class='item-header'>星期六</div>";
         echo "<div class='item-header'>星期日</div>";
     }
+
+    
 
         foreach($days as $day){
             $c_month=explode("-",$day)[1]; 
@@ -1122,13 +1230,21 @@ $color2='green';
 
             /***********************/
             $c_day=explode("-",$day)[2];  //將日期 $day 通過 - 符號拆分為數組，然後取出數組的第三個元素，即日期的天數部分
+            $m_day=explode("-",$day)[1].'-'.explode("-",$day)[2];
 
-            if (array_key_exists($day, $holidays)) {  // "指定日期是國定假日";
+            $the_year=$c_day=explode("-",$day)[0]; 
+            $the_month=$c_day=explode("-",$day)[1]; 
+            $the_day=$c_day=explode("-",$day)[2]; 
+
+            // $tmp_day=solarToLunar(explode("-",$day)[0],explode("-",$day)[1],explode("-",$day)[2]);
+
+            // if (array_key_exists($day, $holidays)) {  // "指定日期是國定假日";  //只顯示當年國定假日
+            if (array_key_exists($m_day, $holidays)) {  // "指定日期是國定假日";  //顯示每一年國定假日
                 // if($c_month==$pre_month || ($month=='1'&&$c_month=='12') || ($month=='12'&&$c_month=='11')){ //非當月日期時
                 if($c_month != $month){
                         echo "<div class='item not-month'>";
                         echo "<div class='date'>$c_day</div>";
-                        echo "<div class='public_holiday'>$holidays[$day]</div>";  //$holidays['2024-01-01']
+                        echo "<div class='public_holiday'>$holidays[$m_day] </div>";  //$holidays['2024-01-01']
                         echo "</div>";
                 }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
                         echo "<div class='item not-month'>";
@@ -1141,17 +1257,17 @@ $color2='green';
                     if($w==0){  //如果星期幾是 0（星期日）
                             echo "<div class='item holiday holiday-sunday'>";
                             echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "<div class='public_holiday'>$holidays[$m_day] </div>";
                             echo "</div>";
                     }else if($w==6){  //如果星期幾是 6（星期六）
                             echo "<div class='item holiday holiday-saturday'>";
                             echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "<div class='public_holiday'>$holidays[$m_day]</div>";
                             echo "</div>";
                     }else{  //如果是工作日（即星期一到星期五）
                             echo "<div class='item weekday'>";
                             echo "<div class='date'>$c_day</div>";
-                            echo "<div class='public_holiday'>$holidays[$day]</div>";
+                            echo "<div class='public_holiday'>$holidays[$m_day]</div>";
                             echo "</div>";
                     }
                 }
@@ -1160,6 +1276,11 @@ $color2='green';
                 if($c_month != $month){
                         echo "<div class='item not-month'>";
                         echo "<div class='date'>$c_day</div>";
+                        echo "<div class='date {$l_date_color}'>";
+                        $lunar = new Lunar();
+                        $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+                        print_r($l_day[2]);
+                        echo "</div>";
                         echo "</div>";
                 }/*else if($c_month==$next_month || ($month=='1'&&$c_month=='2') || ($month=='12'&&$c_month=='1')){ //非當月日期時
                         echo "<div class='item not-month'>";
@@ -1170,20 +1291,40 @@ $color2='green';
                     if($c_day == $today && $month == $today_month && $year == $today_year){
                         echo "<div class='item'>";
                         echo "<div class='date {$date_color} date-today'>$c_day</div>";
+                        echo "<div class='date {$l_date_color}'>";
+                        $lunar = new Lunar();
+                        $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+                        print_r($l_day[2]);
+                        echo "</div>";
                         echo "</div>";
                     }else{
                         $w=date("w",strtotime($day));
                         if($w==0){  //如果星期幾是 0（星期日）
                                 echo "<div class='item holiday holiday-sunday'>";
                                 echo "<div class='date'>$c_day</div>";
+                                echo "<div class='date {$l_date_color}'>";
+                                $lunar = new Lunar();
+                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+                                print_r($l_day[2]);
+                                echo "</div>";
                                 echo "</div>";
                         }else if($w==6){  //如果星期幾是 6（星期六）
                                 echo "<div class='item holiday holiday-saturday'>";
                                 echo "<div class='date'>$c_day</div>";
+                                echo "<div class='date {$l_date_color}'>";
+                                $lunar = new Lunar();
+                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+                                print_r($l_day[2]);
+                                echo "</div>";
                                 echo "</div>";
                         }else{  //如果是工作日（即星期一到星期五）
                                 echo "<div class='item'>";
                                 echo "<div class='date {$date_color}'>$c_day</div>";
+                                echo "<div class='date {$l_date_color}'>";
+                                $lunar = new Lunar();
+                                $l_day = $lunar->convertSolarToLunar($the_year,$the_month,$the_day);
+                                print_r($l_day[2]);
+                                echo "</div>";
                                 echo "</div>";
                         }
                     }
