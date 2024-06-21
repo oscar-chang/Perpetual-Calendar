@@ -136,6 +136,18 @@ $color2='green';
     //     $img = rand(0,7).'.png';
     // }
 
+    function isLeapYear($year) {
+        return ($year % 4 == 0 && $year % 100 != 0) || ($year % 400 == 0);
+    }
+    
+    function februarySize($year) {
+        if (isLeapYear($year)) {
+            return '大'; // 閏年二月有29天，標記為大
+        } else {
+            return '小'; // 平年二月有28天，標記為小
+        }
+    }
+
     function getMonthSize($month, $year) {
         switch($month) {
             case 'January':
@@ -152,12 +164,13 @@ $color2='green';
             case 'November':
                 return '小';
             case 'February':
+                return februarySize($year);
                 // 閏年判斷
-                if (($year % 4 == 0 && $year % 100 != 0) || ($year % 400 == 0)) {
-                    return '大'; // 閏年二月有29天，標記為大
-                } else {
-                    return '小'; // 平年二月有28天，標記為小
-                }
+                // if (($year % 4 == 0 && $year % 100 != 0) || ($year % 400 == 0)) {
+                //     return '大'; // 閏年二月有29天，標記為大
+                // } else {
+                //     return '小'; // 平年二月有28天，標記為小
+                // }
             default:
                 return '';
         }
@@ -166,20 +179,20 @@ $color2='green';
     // 使用當前年份來測試
     $currentYear = date('Y');
     
-    function monthCompare($month, $currentYear) {
+    function monthCompare($month, $year) {
         $mapping = [
-            '1' => getMonthSize('January', $currentYear),
-            '2' => getMonthSize('February', $currentYear),
-            '3' => getMonthSize('March', $currentYear),
-            '4' => getMonthSize('April', $currentYear),
-            '5' => getMonthSize('May', $currentYear),
-            '6' => getMonthSize('June', $currentYear),
-            '7' => getMonthSize('July', $currentYear),
-            '8' => getMonthSize('August', $currentYear),
-            '9' => getMonthSize('September', $currentYear),
-            '10' => getMonthSize('October', $currentYear),
-            '11' => getMonthSize('November', $currentYear),
-            '12' => getMonthSize('December', $currentYear)
+            '1' => getMonthSize('January', $year),
+            '2' => getMonthSize('February', $year),
+            '3' => getMonthSize('March', $year),
+            '4' => getMonthSize('April', $year),
+            '5' => getMonthSize('May', $year),
+            '6' => getMonthSize('June', $year),
+            '7' => getMonthSize('July', $year),
+            '8' => getMonthSize('August', $year),
+            '9' => getMonthSize('September', $year),
+            '10' => getMonthSize('October', $year),
+            '11' => getMonthSize('November', $year),
+            '12' => getMonthSize('December', $year)
         ];
         return $mapping[$month];
     }
@@ -188,7 +201,8 @@ $color2='green';
     // print_r($months);
     
     echo "<!--".monthCompare($month, $currentYear)."-->";
-    $monthCompare = monthCompare($month, $currentYear);
+    $monthCompare = monthCompare($month, $year);
+    // echo $monthCompare.$year;
 
     // if(monthCompare($month, $currentYear) == '大'){
     //     echo '大月'; 
@@ -327,19 +341,37 @@ $color2='green';
         if($month+1>12){
             $next=1;
             $next_year=$year+1;
-        
         }else{
             $next=$month+1;
             $next_year=$year;
         }
 
+        if($year < '1900' || $year > '2050') {
+            $month = $today_month;
+            $go_pre_year = $today_year;
+            $go_next_year = $today_year;
+        }else {
+            $month = $month;
+            $go_pre_year=$year-1;
+            $go_next_year=$year+1;
+        }
+
         if (!isset($_GET['type']) || empty($_GET['type'])) {
             $type = 'en';
+            $lan_box = 'lan-en';
+            $select_box = 'select-en';
+            $select_box2 = 'select2-en';
         }else{
             if($_GET['type'] == 'en'){
                 $type = 'en';
+                $lan_box = 'lan-en';
+                $select_box = 'select-en';
+                $select_box2 = 'select2-en';
             }else{
                 $type = 'ch';
+                $lan_box = '';
+                $select_box = '';
+                $select_box2 = '';
             }
         }
 
@@ -372,7 +404,7 @@ $color2='green';
             /* background-image: url('./images/horizontal/pexels-sinarz97-20015727.jpg');  */
             background-image: url('./images/<?= $bg_img ?>'); 
             background-size: cover;
-            background-repeat:no-repeat;
+            background-repeat: no-repeat;
 
             background-position: <?= $bg_position ?>;
             background-repeat: <?= $bg_repeat ?>;
@@ -518,6 +550,38 @@ $color2='green';
             text-decoration: none;
             font-size: xxx-large;
         }
+
+        .next_year_btn {
+            width: 3%;
+            /* float: left; */
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.15em 0.11em 0.1em;
+            transition: all 0.2s;
+            right: 24.5%;
+            top: 18%;
+            position: absolute;
+        }
+        .pre_year_btn {
+            width: 3%;
+            /* float: right; */
+            text-align: center;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-shadow: black 0.15em 0.11em 0.1em;
+            transition: all 0.2s;
+            left: 58%;
+            top: 18%;
+            position: absolute;
+        }
+        .pre_year_btn > a, .next_year_btn > a {
+            color: white;
+            text-decoration: none;
+            font-size: xxx-large;
+        }
+
+
         .radio input[type="radio"] {display: none; }
         .radio input:checked + .button {background: #5e7380; color: #fff; cursor: default; }
         .radio .button {
@@ -535,7 +599,31 @@ $color2='green';
         .language_box{
             position: absolute;
             left: 64%;
-            top: 5%;  /* 12% */
+            top: 3%;  /* 12% */
+        }
+        .chinese_zodiac {
+            ilter: drop-shadow(0px 0px 10px rgba(255, 255, 255, .3));
+            width: 70px;
+            height: auto;
+            /* line-height: 57px; */
+            justify-content: center;
+            display: inline-flex;
+            background-blend-mode: lighten;
+            /* background-image: linear-gradient(#fffdfd, #fff); */
+            background-color: rgba(255, 255, 255, .8);
+            border-radius: 10%;
+        }
+        .chinese_zodiac > img {
+            width: 100%;
+        }
+        .lan-en {
+            top: 5.5%;
+        }
+        .select-en {
+            top: 20.5%;
+        }
+        .select2-en {
+            top: 19.5%;
         }
   </style>
   <script>
@@ -678,6 +766,7 @@ $color2='green';
                         var type = 'en';
                     }
                     var re_url = '?year='+year+'&month='+month+'&type='+type;
+                    alert('年月 不在設定值內');
                     window.location.href = re_url;
                     console.log("年月 不在設定值內.");
                 }
@@ -720,14 +809,14 @@ $color2='green';
 <!-- <h1>萬年曆 - Oscar</h1>   -->
 
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
-    <div class="language_box">
+    <div class="language_box <?= $lan_box; ?>">
         <div class="radio">
             <label><span class="round button"><input type="radio" name="language" value="en">en </span></label>
             <label><span class="round button"><input type="radio" name="language" value="ch">ch </span></label>
         </div>
     </div>
 
-    <div class="select-date">
+    <div class="select-date <?= $select_box; ?>">
 
         <select onchange="get_year_val()" name="" id="year" class="select <?=$year_select?>">
             <!-- <option class="selectopt" value="1900">1900</option> -->
@@ -757,11 +846,11 @@ $color2='green';
 
     
 
-    <div class="month_btn">
+    <!-- <div class="month_btn"> -->
         <!-- <div class="next_month_btn"><a href="index.php?month=<?= $pre ?>">上個月</a></div> -->
         <!--div><?=$month?>月</!--div-->
         <!-- <div class="pre_month_btn"><a href="index.php?month=<?= $next ?>">下個月</a></div> -->
-    </div>
+    <!-- </div> -->
 
     <?php 
     // echo "<hr>";
@@ -907,11 +996,12 @@ $color2='green';
     }
 
     .main-mark-year {
-        font-size: 60px;
+        font-size: 43px;
         font-family: fantasy;
         letter-spacing: 12px;
         color: white;
         text-align: left;
+        text-shadow: black 0.07em 0.07em 0.01em;
     }
 
     .main-mark-month {
@@ -921,6 +1011,7 @@ $color2='green';
         color: white;
         text-align: center;
         font-weight: 900;
+        /* margin: 5px; */
         text-shadow: black 0.07em 0.07em 0.01em;
     }
 
@@ -931,6 +1022,7 @@ $color2='green';
         letter-spacing: 12px;
         color: white;
         text-align: left;
+        margin: 15px auto;
     }
 
     .year-mark2 {
@@ -1029,6 +1121,7 @@ $color2='green';
     }
 
     .time-color2 {
+        /* margin: 5px; */
         text-align: right;
         color: black;
         text-shadow: #a3a3a3 0.1em 0.1em 0.2em;
@@ -1039,7 +1132,7 @@ $color2='green';
     }
 
     .mark2 {
-        width: 95%;
+        width: 98%;
     }
 
     .next-btn1 {
@@ -1061,7 +1154,9 @@ $color2='green';
 
     </style>
 
-    <div class="pre_month_btn"><a href="index.php?year=<?= $pre_year ?>&month=<?= $pre ?>&type=<?= $type ?>" title="上個月">«</a></div>
+    <div class="pre_year_btn <?= $select_box2; ?>"><a href="index.php?year=<?= $go_pre_year ?>&month=<?= $month ?>&type=<?= $type ?>" title="上一年">‹</a></div>
+
+    <div class="pre_month_btn <?= $select_box2; ?>"><a href="index.php?year=<?= $pre_year ?>&month=<?= $pre ?>&type=<?= $type ?>" title="上一個月">«</a></div>
 
     <?php 
 
@@ -1170,13 +1265,55 @@ $color2='green';
     // echo $shengxiao;
     $lunar = new Lunar();
     $l_day = $lunar->convertSolarToLunar($year,'01','01');
+
+    $zodiac_id = $l_day[6];
+
+    switch ($zodiac_id) {
+        case '鼠':
+            $zodiac = 'rat';
+            break;
+        case '牛':
+            $zodiac = 'ox';
+            break;
+        case '虎':
+            $zodiac = 'tiger';
+            break;
+        case '兔':
+            $zodiac = 'rabbit';
+            break;
+        case '龍':
+            $zodiac = 'dragon';
+            break;
+        case '蛇':
+            $zodiac = 'snake';
+            break;
+        case '馬':
+            $zodiac = 'horse';
+            break;
+        case '羊':
+            $zodiac = 'goat';
+            break;
+        case '猴':
+            $zodiac = 'monkey';
+            break;
+        case '雞':
+            $zodiac = 'rooster';
+            break;
+        case '狗':
+            $zodiac = 'dog';
+            break;
+        case '豬':
+            $zodiac = 'pork';
+            break; 
+        default:
+            # code...
+            break;
+    }
     // var_dump($l_day);
 // echo $lun_day;
     if ($type == 'en') {
         echo "<div class='main-mark {$mark}'>";
-        echo "<div class='main-mark-year {$year_color}'>$year <span class='chinese_zodiac {$cz_color}'>";
-        print_r($l_day[6]);
-        echo "</span></div>";
+        echo "<div class='main-mark-year {$year_color}'>$year <span class='chinese_zodiac {$cz_color}'><img src='./images/chinese-zodiac/{$zodiac}.png' alt=''></span></div>";
         echo "<div class='main-mark-month {$month_color}'>$currentEMonth</div>";
         //echo "<div class='main-mark-time'>$currentDateTime</div>";  //php 印出當下時分秒
         echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
@@ -1340,7 +1477,10 @@ $color2='green';
     
 
     ?>
-    <div class="next_month_btn"><a href="index.php?year=<?= $next_year ?>&month=<?= $next ?>&type=<?= $type ?>" title="下個月">»</a></div>
+    
+    <div class="next_month_btn <?= $select_box2; ?>"><a href="index.php?year=<?= $next_year ?>&month=<?= $next ?>&type=<?= $type ?>" title="下一個月">»</a></div>
+    <div class="next_year_btn <?= $select_box2; ?>"><a href="index.php?year=<?= $go_next_year ?>&month=<?= $month ?>&type=<?= $type ?>" title="下一年">›</a></div>
+
 </div>
 <!-- 請在這裹撰寫你的萬年曆程式碼 -->
   
