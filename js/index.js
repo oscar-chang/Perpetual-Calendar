@@ -114,7 +114,7 @@ $(document).ready(function () {
                 var type = 'en';
             }
             var re_url = '?year=' + year + '&month=' + month + '&type=' + type;
-            alert('年月 不在設定值內');
+            alert('年月不在設定值內，自動跳轉至目前月份');
             window.location.href = re_url;
         }
     } else {
@@ -131,6 +131,7 @@ $(document).ready(function () {
             var type = 'en';
         }
         var re_url = '?year=' + year + '&month=' + month + '&type=en';
+        alert('年月參數有少，自動跳轉至目前月份');
         window.location.href = re_url;
     }
 });
