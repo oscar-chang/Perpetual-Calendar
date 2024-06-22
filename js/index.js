@@ -143,7 +143,7 @@ function updateTime() {
     var seconds = now.getSeconds().toString().padStart(2, '0');
     var currentTime = hours + ":" + minutes + ":" + seconds;
     document.getElementById('current-time').textContent = currentTime;
-    // console.log("Updating time");
+    console.log("Updating time");
 }
 
 // 在整个页面加载完成后调用 updateTime 函数
@@ -151,17 +151,16 @@ window.onload = function () {
     updateTime();
     // 如果您希望定期更新时间，可以使用 setInterval
     setInterval(updateTime, 1000); // 每秒更新一次时间
-};
 
-window.onload = function () {
     // 背景圖片在頁面加載時顯示
     // document.body.classList.add('show-background');
-    document.querySelector('.image-container').classList.add('show');
+    document.querySelector('.box-container').classList.add('show');
 
     // 或者在按鈕點擊時顯示背景圖片
     // document.getElementById('showBackground').addEventListener('click', function () {
     //     document.body.classList.add('show-background');
     // });
 };
+
 
 

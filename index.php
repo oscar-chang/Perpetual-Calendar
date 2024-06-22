@@ -254,11 +254,11 @@
             background-repeat: <?=$bg_repeat ?>;
             background-size: <?=$bg_size ?>;
         }
-        .image-container {
+        .box-container {
             transition: opacity 2s ease-in; /* 2s 可以根據需要調整 */
             opacity: 0; /* 初始透明度為 0 */
         }
-        .image-container.show {
+        .box-container.show {
             opacity: 1;
         }
     </style>
@@ -415,7 +415,7 @@
         echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
         echo "</div>";
 
-        echo "<div class='block-table image-container {$table}'>";
+        echo "<div class='block-table box-container {$table}'>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期日')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期一')."</div>";
         echo "<div class='item-header'>".chineseWeekdayToEnglish('星期二')."</div>";
@@ -433,7 +433,7 @@
         echo "<div class='main-mark-time {$time_color}' id='current-time'>$currentDateTime</div>";
         echo "</div>";
 
-        echo "<div class='block-table image-container {$table}'>";
+        echo "<div class='block-table box-container {$table}'>";
         echo "<div class='item-header'>星期日</div>";
         echo "<div class='item-header'>星期一</div>";
         echo "<div class='item-header'>星期二</div>";
