@@ -275,7 +275,8 @@ td {
 }
 
 .block-table {
-    width: 722px;
+    /* width: 722px; */
+    width: 710px;
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
